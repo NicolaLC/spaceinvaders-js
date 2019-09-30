@@ -68,6 +68,10 @@ h1 b {
   transition: left 0.1s ease-out;
 }
 
+.GameScene .Player.Damaged {
+  border: 1px solid red;
+}
+
 .GameScene .Bullet {
   width: 5px;
   height: 10px;
@@ -75,6 +79,15 @@ h1 b {
   box-shadow: 0 2px 10px 0 red;
   position: absolute;
   transition: all 0.5s ease-out;
+}
+
+.GameScene .EnemyBullet {
+  width: 5px;
+  height: 20px;
+  background: red;
+  box-shadow: 0 2px 10px 0 orange;
+  position: absolute;
+  transition: all 0.25s ease-out;
 }
 
 .GameScene .Bullet.Shooted {

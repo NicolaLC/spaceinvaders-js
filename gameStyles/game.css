@@ -11,6 +11,16 @@ html {
   font-size: 100%;
   font-family: 'Press Start 2P', cursive;
   overflow: hidden;
+  background-image: linear-gradient(
+    to bottom,
+    #051937,
+    #044268,
+    #007199,
+    #00a3c6,
+    #12d8eb
+  );
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 h1 {
@@ -29,13 +39,11 @@ h1 b {
   place-content: center;
   place-items: center;
   flex-direction: column;
-  background: black;
 }
 
 .GameScene {
   width: calc(1200px - 2rem);
   height: calc(800px - 2rem);
-  background: #4a4a4a;
   position: relative;
   padding: 1rem;
 }
@@ -46,6 +54,7 @@ h1 b {
   position: absolute;
   left: 12.5%;
   display: grid;
+  z-index: 10;
   grid-template-columns: repeat(auto-fill, 3rem);
   grid-template-rows: repeat(auto-fit, 3rem);
 }
@@ -64,6 +73,7 @@ h1 b {
   transform: rotateZ(-45deg);
   font-size: 2rem;
   user-select: none;
+  z-index: 10;
   /** let's add some cool transition effect */
   transition: left 0.1s ease-out;
 }
@@ -79,6 +89,7 @@ h1 b {
   box-shadow: 0 2px 10px 0 red;
   position: absolute;
   transition: all 0.5s ease-out;
+  z-index: 11;
 }
 
 .GameScene .EnemyBullet {
@@ -92,4 +103,51 @@ h1 b {
 
 .GameScene .Bullet.Shooted {
   box-shadow: 0 2px 10px 0 red;
+}
+
+.GameScene .Earth {
+  display: block;
+  width: 100vw;
+  height: 100vw;
+  position: fixed;
+  left: 0;
+  bottom: -175vh;
+  z-index: 0;
+  background: url('../assets/images/planet-earth.png');
+  background-repeat: no-repeat;
+  background-size: contain;
+  animation: spin-right 500s linear infinite;
+}
+
+.EarthOrbit {
+  display: block;
+  position: absolute;
+  top: -25vw;
+  left: -25vw;
+  width: 150vw;
+  height: 150vw;
+  border: 2px #4a437f dashed;
+  border-radius: 100%;
+  transform-origin: 50% 50%;
+  animation: spin-right 200s linear infinite;
+  opacity: 0.5;
+}
+
+.EarthOrbit .Moon {
+  transform: rotate(0deg);
+  position: absolute;
+  top: 30rem;
+  left: 0;
+  height: 10rem;
+  width: 10rem;
+  border-radius: 100%;
+  background: url('../assets/images/moon.png');
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+
+@keyframes spin-right {
+  100% {
+    transform: rotate(360deg);
+  }
 }

@@ -91,7 +91,7 @@ Enemies.prototype = {
   },
   spawnRandom: function () {
     let result = '';
-    for (let i = 0; i < Math.floor(Math.random() * 6 + 1); i++) {
+    for (let i = 0; i < Math.floor(Math.random() * 6 + 3); i++) {
       for (let j = 0; j < 18; j++) {
         result += `<div class="Enemy">${Math.floor(Math.random() * 3) > 1 ? '👽' : '👾'}</div>`
       }

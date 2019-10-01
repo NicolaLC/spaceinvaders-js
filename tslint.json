@@ -1,13 +1,5 @@
-/**
- * This starter project recommended using Microsoft TSLint rules.
- * Please see https://github.com/Microsoft/tslint-microsoft-contrib for more details.
- */
-
 {
-  "extends": [
-    "tslint-microsoft-contrib/recommended",
-    "tslint-config-prettier"
-  ],
+  "extends": ["tslint-microsoft-contrib/recommended", "tslint-config-prettier"],
   "rules": {
     "mocha-no-side-effect-code": false,
     "missing-jsdoc": false,
@@ -17,6 +9,8 @@
     "no-void-expression": false,
     "no-redundant-jsdoc": false,
     "prefer-type-cast": false,
+    "insecure-random": false,
+    "no-inner-html": false,
     "typedef": [
       true,
       "parameter",

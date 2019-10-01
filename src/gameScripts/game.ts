@@ -1,3 +1,6 @@
+import { Utils } from './core/utils';
+import { Enemies } from './entities/enemies.prototype';
+import { Player } from './entities/player.prototype';
 /**
  * GAME.js
  *
@@ -5,64 +8,70 @@
  * @author      nicolacastellanidev@gmail.com
  * @version     SNAPSHOT
  */
-/** ./ CORE METHODS */
-/** HTML REFERENCES */
-const scene = document.querySelector('.GameScene');
-const enemyWrapper = document.querySelector('.Enemies');
-/** ./ HTML REFERENCES */
 
-/** GLOBALS CONST */
-let player = new Player();
-let enemies = new Enemies(player);
-const LOG_STYLE = 'color: lawngreen';
-const FPS = 1000 / 60;
-const SCENE_WIDTH = scene.getBoundingClientRect().width;
-/** ./ GLOBALS CONST */
+export class Game {
+  // HTML REFERENCES
+  scene: HTMLElement = document.querySelector('.GameScene');
+  enemyWrapper: HTMLElement = document.querySelector('.Enemies');
+  // GAME OBJECTS
+  // @todo define player and enemy class
+  player: Player;
+  enemies: Enemies;
+  // CONSTANTS
+  utils: Utils = new Utils();
+  FPS: number = 1000 / 60;
+  SCENE_WIDTH: number = this.scene.getBoundingClientRect().width;
+  requestAnimationFrame: (callback: FrameRequestCallback) => number =
+    window.requestAnimationFrame;
 
-/** CORE METHODS */
-const _requestAnimationFrame = window.requestAnimationFrame;
-const lerp = (start, end, amt) => {
-  return (1 - amt) * start + amt * end
-}
-
-const restart = () => {
-  /*player = new Player();
-  enemies = new Enemies(player);
-  init();*/
-  window.location.reload();
-}
-
-const render = () => {
-  /// render is the game loop
-  /// we need to reach 60fps
-  /// so we need to call the render method 60 times per second
-  /// so 60 * 60 times per minutes (1200 times)
-  /// to reach this frame gap we need to divide a second (1000 ms) into 60
-  if (player.destroyed) {
-    /// player destroyed
-    restart();
+  constructor() {
+    this.init();
   }
-  player.render();
-  enemies.render();
-  setTimeout(() => {
-    _requestAnimationFrame(render);
-  }, FPS);
+
+  restart = () => {
+    window.location.reload();
+  };
+
+  render = () => {
+    const {
+      player,
+      enemies,
+      FPS,
+      requestAnimationFrame,
+      restart,
+      render,
+    } = this;
+    /// render is the game loop
+    /// we need to reach 60fps
+    /// so we need to call the render method 60 times per second
+    /// so 60 * 60 times per minutes (1200 times)
+    /// to reach this frame gap we need to divide a second (1000 ms) into 60
+    if (player.destroyed) {
+      /// player destroyed
+      restart();
+    }
+    player.render();
+    enemies.render();
+    setTimeout(() => {
+      requestAnimationFrame(render);
+    }, FPS);
+  };
+
+  init = () => {
+    const { render, utils } = this;
+    utils.log(`%cGame core is ready ... `);
+    utils.log(`%cINIT player ... `);
+    this.player = new Player(this);
+    this.player.init();
+    utils.log(`%cINIT enemies ... `);
+    this.enemies = new Enemies(this.player, this);
+    this.enemies.init();
+    utils.log(`%cSettings game core loop ... `);
+    render();
+  };
 }
 
-const init = () => {
-  console.log(`%cGame core is ready ... `, LOG_STYLE);
-  console.log(`%cINIT player ... `, LOG_STYLE);
-  player.init();
-  console.log(`%cINIT enemies ... `, LOG_STYLE);
-  enemies.init();
-  console.log(`%cSettings game core loop ... `, LOG_STYLE);
-  render();
-}
-
-(() => {
-  init();
-})()
-
+(window as any).game = new Game();
 
 /**
  * NEXT STEPS

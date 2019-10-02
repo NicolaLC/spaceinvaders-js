@@ -2,10 +2,10 @@
   "compilerOptions": {
     "outDir": "./build/",
     "noImplicitAny": true,
-    "module": "es6",
+    "module": "amd",
     "target": "es5",
     "jsx": "react",
     "allowJs": true,
-    "sourceMap": false
+    "sourceMap": true
   }
 }

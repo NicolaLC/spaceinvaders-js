@@ -40,36 +40,35 @@ export class Enemies {
   };
 
   move = () => {
-    let {
-      ENEMIES_DIRECTION,
-      enemiesWrapper,
-      SCENE_WIDTH,
-      TARGET_ENEMIES_POSITION,
-      ENEMIES_SPEED,
-    } = this;
+    let { enemiesWrapper, SCENE_WIDTH } = this;
     /// we need to move the plaeyr into a specific direction
-    const targetMove = 25 * ENEMIES_DIRECTION;
+    const targetMove = 25 * this.ENEMIES_DIRECTION;
     const MAX = SCENE_WIDTH - enemiesWrapper.getBoundingClientRect().width;
     const MIN = 16;
     /// get the player current offset left
     let { offsetLeft } = enemiesWrapper;
     /// change it according to current direction
     offsetLeft += targetMove;
-    TARGET_ENEMIES_POSITION.left = Math.min(MAX, Math.max(MIN, offsetLeft));
+    this.TARGET_ENEMIES_POSITION.left = Math.min(
+      MAX,
+      Math.max(MIN, offsetLeft),
+    );
     if (
-      TARGET_ENEMIES_POSITION.left >= MAX - 25 ||
-      TARGET_ENEMIES_POSITION.left <= MIN + 25
+      this.TARGET_ENEMIES_POSITION.left >= MAX ||
+      this.TARGET_ENEMIES_POSITION.left <= MIN
     ) {
-      ENEMIES_DIRECTION *= -1;
+      this.ENEMIES_DIRECTION *= -1;
       setTimeout(() => {
-        TARGET_ENEMIES_POSITION.top += 16 * 3;
-        ENEMIES_SPEED -= ENEMIES_SPEED / 4;
-        ENEMIES_SPEED = Math.max(1000, ENEMIES_SPEED);
-      }, ENEMIES_SPEED / 2);
+        this.TARGET_ENEMIES_POSITION.top += 16 * 3;
+        this.ENEMIES_SPEED -= this.ENEMIES_SPEED / 8;
+        this.ENEMIES_SPEED = Math.max(500, this.ENEMIES_SPEED);
+      }, this.ENEMIES_SPEED - 10);
     }
+
     setTimeout(() => {
       this.move();
-    }, ENEMIES_SPEED);
+    }, this.ENEMIES_SPEED);
+    console.log(1);
   };
   render = () => {
     const { enemiesWrapper, TARGET_ENEMIES_POSITION, game } = this;
@@ -96,6 +95,9 @@ export class Enemies {
     const enemies = enemiesWrapper.querySelectorAll('.Enemy');
     const randomEnemy =
       enemies[Math.floor(Math.random() * enemies.length - 1) + 1];
+    if (!randomEnemy) {
+      return;
+    }
     const { offsetLeft, offsetTop } = randomEnemy as any;
     bullet.classList.add('EnemyBullet');
     bullet.style.left = `${offsetLeft + enemiesWrapper.offsetLeft + 21.5}px`;

@@ -1,6 +1,6 @@
 import { Utils } from './core/utils';
 import { Enemies } from './entities/enemies.prototype';
-import { Player } from './entities/player.prototype';
+import { Player } from './entities/player';
 /**
  * GAME.js
  *
@@ -25,7 +25,6 @@ export class Game {
     window.requestAnimationFrame;
 
   constructor() {
-    debugger;
     this.init();
   }
 
@@ -60,14 +59,12 @@ export class Game {
 
   init = () => {
     const { render, utils } = this;
-    utils.log(`%cGame core is ready ... `);
-    utils.log(`%cINIT player ... `);
+    utils.log(`Game core is ready ... `);
+    utils.log(`INIT player ... `);
     this.player = new Player(this);
-    this.player.init();
-    utils.log(`%cINIT enemies ... `);
+    utils.log(`INIT enemies ... `);
     this.enemies = new Enemies(this.player, this);
-    this.enemies.init();
-    utils.log(`%cSettings game core loop ... `);
+    utils.log(`Settings game core loop ... `);
     render();
   };
 }

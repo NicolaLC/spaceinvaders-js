@@ -1,8 +1,9 @@
 import { Game } from '../game';
+import { Transform } from 'stream';
 /**
  * PLAYER PROTOTYPE
  */
-export class Player {
+export class Player extends Transform {
   // constants
   PL_LIFE: number = 3;
   PL_MOVEMENT_ENUM: any = {
@@ -22,9 +23,8 @@ export class Player {
   game: Game;
 
   constructor(game: Game) {
+    super();
     this.game = game;
-    this.init();
-    game.utils.log('Player spawned');
   }
 
   checkCollision = (element: HTMLElement) => {
@@ -144,7 +144,7 @@ export class Player {
       if (!this.PL_SHOOT_INTERVAL) {
         this.PL_SHOOT_INTERVAL = setInterval(() => {
           this.shoot();
-        }, 250);
+        }, 100);
         this.shoot();
       }
     } else {

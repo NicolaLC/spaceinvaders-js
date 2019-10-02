@@ -23,8 +23,8 @@
     "webpack-cli": "^3.3.9"
   },
   "scripts": {
-    "build": "copyfiles src/assets/**/* *.html src/**/*.css build/ && npx webpack",
-    "build:watch": "npm run build"
+    "build-dev": "copyfiles src/assets/**/* *.html src/**/*.css build/ && npx webpack --mode development",
+    "build:watch": "npm run build-dev"
   },
   "author": "Jakub Synowiec <github@jakubsynowiec.info>",
   "license": "Apache-2.0",

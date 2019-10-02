@@ -25,6 +25,7 @@ export class Game {
     window.requestAnimationFrame;
 
   constructor() {
+    debugger;
     this.init();
   }
 
@@ -70,8 +71,6 @@ export class Game {
     render();
   };
 }
-
-(window as any).game = new Game();
 
 /**
  * NEXT STEPS

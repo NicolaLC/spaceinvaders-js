@@ -13,23 +13,24 @@
     "prettier": "~1.18.2",
     "rimraf": "^3.0.0",
     "ts-jest": "^24.0.0",
+    "ts-loader": "^6.2.0",
     "tslint": "~5.19.0",
     "tslint-config-prettier": "1.18.0",
     "tslint-microsoft-contrib": "~6.2.0",
     "tsutils": "~3.17.0",
-    "typescript": "~3.6.0"
+    "typescript": "^3.6.3",
+    "webpack": "^4.41.0",
+    "webpack-cli": "^3.3.9"
   },
   "scripts": {
-    "clean": "rimraf coverage build tmp",
-    "build": "tsc -p tsconfig.release.json",
-    "build:watch": "copyfiles src/assets/**/* *.html src/**/*.css build/ && tsc -w -p tsconfig.release.json",
-    "lint": "tslint -t stylish --project \"tsconfig.json\"",
-    "test": "jest --coverage",
-    "test:watch": "jest --watch"
+    "build": "copyfiles src/assets/**/* *.html src/**/*.css build/ && npx webpack",
+    "build:watch": "npm run build"
   },
   "author": "Jakub Synowiec <github@jakubsynowiec.info>",
   "license": "Apache-2.0",
   "dependencies": {
+    "babel-polyfill": "^6.26.0",
+    "commonjs": "0.0.1",
     "tslib": "~1.10.0"
   }
 }

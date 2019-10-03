@@ -1,6 +1,6 @@
 import { Game } from '../game';
 import { GameObject } from '../core/class/game-object';
-import { Input, KEYS } from '../core/class/keyboard-events';
+import { KEYS, InputManager } from '../core/class/keyboard-events';
 import { Vector3 } from '../core/class/vector3';
 /**
  * PLAYER PROTOTYPE
@@ -9,13 +9,9 @@ export class Player extends GameObject {
   // constants
   currentLife: number = 3;
   shootInterval: any = null;
-  game: Game;
-  inputManager: Input;
 
-  constructor(game: Game) {
+  constructor() {
     super();
-    this.game = game;
-    this.inputManager = game.inputManager;
   }
 
   checkCollision = (element: HTMLElement) => {
@@ -44,16 +40,16 @@ export class Player extends GameObject {
   }
 
   onUpdate() {
-    let { htmlElement, game, inputManager } = this;
+    let { htmlElement } = this;
     if (!htmlElement) {
       return;
     }
-    if (inputManager.keyPressed(KEYS.LEFT)) {
+    if (InputManager.keyPressed(KEYS.LEFT)) {
       this.move(-1);
-    } else if (inputManager.keyPressed(KEYS.RIGHT)) {
+    } else if (InputManager.keyPressed(KEYS.RIGHT)) {
       this.move(1);
     }
-    if (inputManager.keyPressed(KEYS.SPACEBAR)) {
+    if (InputManager.keyPressed(KEYS.SPACEBAR)) {
       if (!this.shootInterval) {
         this.shootInterval = setInterval(() => {
           this.shoot();
@@ -76,7 +72,7 @@ export class Player extends GameObject {
   }
 
   private move(direction: 1 | -1) {
-    let { htmlElement, game } = this;
+    let { htmlElement } = this;
     if (!htmlElement) {
       return;
     }
@@ -91,30 +87,30 @@ export class Player extends GameObject {
     /// we need also to consider the player width
     /// 16 = 1rem - the padding of our scene
     this.transform.position.x = Math.min(
-      game.SCENE_WIDTH - htmlElement.getBoundingClientRect().width,
+      Game.SCENE_WIDTH - htmlElement.getBoundingClientRect().width,
       Math.max(16, offsetLeft),
     );
   }
 
   private shoot() {
-    const { htmlElement, game } = this;
+    const { htmlElement } = this;
     const bullet = document.createElement('div');
     bullet.classList.add('Bullet');
     bullet.style.left = `${htmlElement.offsetLeft + 21.5}px`;
     bullet.style.top = `700px`;
-    game.scene.appendChild(bullet);
+    Game.scene.appendChild(bullet);
     bullet.classList.add('Shooted');
     const thisInterval = setInterval(() => {
       const collides = this.checkCollision(bullet);
       if (collides) {
-        game.scene.removeChild(bullet);
+        Game.scene.removeChild(bullet);
         clearInterval(thisInterval);
         return;
       }
       const bTop = bullet.getBoundingClientRect().top;
       bullet.style.top = `-${bTop}px`;
       if (bTop <= 100) {
-        game.scene.removeChild(bullet);
+        Game.scene.removeChild(bullet);
         clearInterval(thisInterval);
       }
     }, 10);

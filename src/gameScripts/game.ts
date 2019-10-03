@@ -1,7 +1,6 @@
 import { Utils } from './core/class/utils';
 import { Enemies } from './entities/enemies';
 import { Player } from './entities/player';
-import { Input } from './core/class/keyboard-events';
 /**
  * GAME.js
  *
@@ -12,7 +11,8 @@ import { Input } from './core/class/keyboard-events';
 
 export class Game {
   // HTML REFERENCES
-  scene: HTMLElement = document.querySelector('.GameScene');
+  static scene: HTMLElement = document.querySelector('.GameScene');
+  static SCENE_WIDTH: number = Game.scene.getBoundingClientRect().width;
   enemyWrapper: HTMLElement = document.querySelector('.Enemies');
   // GAME OBJECTS
   // @todo define player and enemy class
@@ -20,14 +20,10 @@ export class Game {
   enemies: Enemies;
   // CONSTANTS
   FPS: number = 1000 / 60;
-  SCENE_WIDTH: number = this.scene.getBoundingClientRect().width;
-  inputManager: Input;
-
   requestAnimationFrame: (callback: FrameRequestCallback) => number =
     window.requestAnimationFrame;
 
-  constructor(input: Input) {
-    this.inputManager = input;
+  constructor() {
     this.init();
   }
 
@@ -63,7 +59,7 @@ export class Game {
     const { render } = this;
     Utils.log(`Game core is ready ... `);
     Utils.log(`INIT player ... `);
-    this.player = new Player(this);
+    this.player = new Player();
     Utils.log(`INIT enemies ... `);
     this.enemies = new Enemies(this.player, this);
     Utils.log(`Settings game core loop ... `);

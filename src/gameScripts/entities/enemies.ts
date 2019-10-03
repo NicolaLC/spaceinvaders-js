@@ -6,7 +6,6 @@ import { MathUtils } from '../core/class/math-utils';
  */
 export class Enemies {
   player: any;
-  game: Game;
   enemiesWrapper: HTMLElement = null;
   TARGET_ENEMIES_POSITION: { top: number; left: number } = {
     left: 0,
@@ -16,10 +15,9 @@ export class Enemies {
   ENEMIES_SPEED: number = 2000;
   SCENE_WIDTH: number = 0;
   // CONSTANTS
-  constructor(player: any, game: Game) {
+  constructor(player: any) {
     this.player = player;
-    this.game = game;
-    this.SCENE_WIDTH = game.SCENE_WIDTH;
+    this.SCENE_WIDTH = Game.SCENE_WIDTH;
     this.init();
     Utils.log('Enemies spawned');
   }
@@ -90,7 +88,7 @@ export class Enemies {
     enemiesWrapper.style.top = `${targetPosTop}px`;
   };
   shoot = () => {
-    const { enemiesWrapper, game } = this;
+    const { enemiesWrapper } = this;
     const bullet = document.createElement('div');
     const enemies = enemiesWrapper.querySelectorAll('.Enemy');
     const randomEnemy =
@@ -102,19 +100,19 @@ export class Enemies {
     bullet.classList.add('EnemyBullet');
     bullet.style.left = `${offsetLeft + enemiesWrapper.offsetLeft + 21.5}px`;
     bullet.style.top = `${offsetTop + enemiesWrapper.offsetTop + 48}px`;
-    game.scene.appendChild(bullet);
+    Game.scene.appendChild(bullet);
     bullet.classList.add('Shooted');
     const thisInterval = setInterval(() => {
       const collides = this.checkCollision(bullet);
       if (collides) {
-        game.scene.removeChild(bullet);
+        Game.scene.removeChild(bullet);
         clearInterval(thisInterval);
         return;
       }
       const bTop = bullet.getBoundingClientRect().top;
       bullet.style.top = `${bTop}px`;
       if (bTop >= 900) {
-        game.scene.removeChild(bullet);
+        Game.scene.removeChild(bullet);
         clearInterval(thisInterval);
       }
     }, 10);

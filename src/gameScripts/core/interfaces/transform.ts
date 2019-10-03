@@ -1,17 +1,7 @@
+import { Vector3 } from '../class/vector3';
+
 export interface Transform {
-  position: {
-    x: number;
-    y: number;
-    z: number;
-  };
-  rotation: {
-    x: number;
-    y: number;
-    z: number;
-  };
-  scale: {
-    x: number;
-    y: number;
-    z: number;
-  };
+  position: Vector3;
+  rotation: Vector3;
+  scale: Vector3;
 }

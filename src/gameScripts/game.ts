@@ -1,6 +1,7 @@
 import { Utils } from './core/utils';
 import { Enemies } from './entities/enemies.prototype';
 import { Player } from './entities/player';
+import { Input } from './core/class/keyboard-events';
 /**
  * GAME.js
  *
@@ -21,10 +22,13 @@ export class Game {
   utils: Utils = new Utils();
   FPS: number = 1000 / 60;
   SCENE_WIDTH: number = this.scene.getBoundingClientRect().width;
+  inputManager: Input;
+
   requestAnimationFrame: (callback: FrameRequestCallback) => number =
     window.requestAnimationFrame;
 
-  constructor() {
+  constructor(input: Input) {
+    this.inputManager = input;
     this.init();
   }
 
@@ -50,7 +54,6 @@ export class Game {
       /// player destroyed
       restart();
     }
-    player.render();
     enemies.render();
     setTimeout(() => {
       requestAnimationFrame(render);

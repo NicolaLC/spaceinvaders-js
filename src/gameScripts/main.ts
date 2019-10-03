@@ -1,6 +1,6 @@
 import { Game } from './game';
+import { Input } from './core/class/keyboard-events';
 
 document.addEventListener('DOMContentLoaded', (event: Event) => {
-  console.log(event);
-  new Game();
+  new Game(new Input());
 });

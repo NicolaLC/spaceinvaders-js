@@ -68,7 +68,6 @@ export class Enemies {
     setTimeout(() => {
       this.move();
     }, this.ENEMIES_SPEED);
-    console.log(1);
   };
   render = () => {
     const { enemiesWrapper, TARGET_ENEMIES_POSITION, game } = this;

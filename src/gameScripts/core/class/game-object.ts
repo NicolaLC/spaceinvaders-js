@@ -1,6 +1,7 @@
 import { Transform } from '../interfaces/transform';
 import { Script } from 'vm';
 import { Utils } from '../utils';
+import { Vector3 } from './vector3';
 /**
  * GameObject
  *
@@ -9,32 +10,37 @@ import { Utils } from '../utils';
  */
 
 export class GameObject {
-  name: string;
-  transform: Transform;
-  scripts: Script;
-  utils: Utils = new Utils();
-
-  protected started: boolean = false;
-  protected destroyed: boolean = false;
+  name?: string;
+  transform?: Transform;
+  scripts?: Script;
+  utils?: Utils = new Utils();
+  started?: boolean = false;
+  destroyed?: boolean = false;
   protected lastAnimationFrame: number = 0;
+
   constructor() {
+    this.transform = {
+      position: new Vector3(0, 0, 0),
+      rotation: new Vector3(0, 0, 0),
+      scale: new Vector3(0, 0, 0),
+    };
     this.onAwake();
+    this.render();
   }
 
-  onAwake() {
+  onAwake?() {
     this.utils.log(`[${this.name}] >>> onAwake`);
-    window.requestAnimationFrame(this.render);
   }
-  onStart() {
+  onStart?() {
     this.utils.log(`[${this.name}] >>> onStart`);
   }
-  onUpdate() {}
-  onDestroy() {
+  onUpdate?() {}
+  onDestroy?() {
     this.utils.log(`[${this.name}] >>> onDestroy`);
     window.cancelAnimationFrame(this.lastAnimationFrame);
     this.destroyed = true;
   }
-  render() {
+  render?() {
     if (this.destroyed) {
       return;
     }
@@ -45,6 +51,8 @@ export class GameObject {
       this.onStart();
     }
 
-    this.lastAnimationFrame = window.requestAnimationFrame(this.render);
+    this.lastAnimationFrame = window.requestAnimationFrame(() => {
+      this.render();
+    });
   }
 }

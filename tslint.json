@@ -11,6 +11,7 @@
     "prefer-type-cast": false,
     "insecure-random": false,
     "no-inner-html": false,
+    "function-name": false,
     "typedef": [
       true,
       "parameter",

@@ -10,8 +10,9 @@ export class Player extends GameObject {
   currentLife: number = 3;
   shootInterval: any = null;
 
-  constructor() {
-    super();
+  constructor(name: string) {
+    super(name);
+    this.onAwake();
   }
 
   checkCollision = (element: HTMLElement) => {
@@ -67,6 +68,7 @@ export class Player extends GameObject {
   public damage() {
     this.currentLife--;
     if (this.currentLife <= 0) {
+      Game.restart();
       super.onDestroy();
     }
   }

@@ -1,5 +1,5 @@
 ## TODO
 
-1. Enemy to GameObject
-2. Create static Input class
-3. Bullet as GameObject
+1. Bullet as GameObject
+2. Game Object automatism
+3. htmlElement automatism

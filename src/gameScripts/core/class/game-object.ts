@@ -9,7 +9,6 @@ import { MathUtils } from './math-utils';
  * @description abstract class for game objects
  * @author      nicolacastellanidev@gmail.com
  */
-
 export class GameObject {
   name: string;
   transform: Transform;
@@ -17,21 +16,24 @@ export class GameObject {
   started: boolean = false;
   destroyed: boolean = false;
   htmlElement: HTMLElement;
+  [key: string]: any;
   protected lastAnimationFrame: number = 0;
 
-  constructor() {
+  constructor(name: string) {
     this.transform = {
       position: new Vector3(0, 0, 0),
       rotation: new Vector3(0, 0, 0),
       scale: new Vector3(0, 0, 0),
     };
-    this.onAwake();
+    this.name = name;
+    Utils.log(`[${name}] >>> spawned`);
+  }
+
+  onAwake() {
+    Utils.log(`[${this.name}] >>> onAwake`);
     this.render();
   }
 
-  onAwake?() {
-    Utils.log(`[${this.name}] >>> onAwake`);
-  }
   onStart?() {
     Utils.log(`[${this.name}] >>> onStart`);
   }
@@ -64,12 +66,18 @@ export class GameObject {
 
   private updatePosition() {
     /// let's animate the player using a Lerp function
-    const targetPos = MathUtils.lerp(
+    const targetPosX = MathUtils.lerp(
       this.htmlElement.offsetLeft,
       this.transform.position.x,
       0.75,
     );
+    const targetPosY = MathUtils.lerp(
+      this.htmlElement.offsetTop,
+      this.transform.position.y,
+      0.75,
+    );
     /// set the player position
-    this.htmlElement.style.left = `${targetPos}px`;
+    this.htmlElement.style.left = `${targetPosX}px`;
+    this.htmlElement.style.top = `${targetPosY}px`;
   }
 }

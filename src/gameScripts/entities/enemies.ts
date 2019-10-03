@@ -1,25 +1,38 @@
 import { Game } from '../game';
-import { Utils } from '../core/class/utils';
-import { MathUtils } from '../core/class/math-utils';
+import { GameObject } from '../core/class/game-object';
+import { Vector3 } from '../core/class/vector3';
 /**
  * PLAYER PROTOTYPE
  */
-export class Enemies {
-  player: any;
-  enemiesWrapper: HTMLElement = null;
-  TARGET_ENEMIES_POSITION: { top: number; left: number } = {
-    left: 0,
-    top: 0,
-  };
-  ENEMIES_DIRECTION: number = 1;
-  ENEMIES_SPEED: number = 2000;
-  SCENE_WIDTH: number = 0;
+export class Enemies extends GameObject {
+  moveDirection: number = 1;
+  movementSpeed: number = 2000;
+  maxMovementX: number = 0;
+  minMovementX: number = 16;
   // CONSTANTS
-  constructor(player: any) {
-    this.player = player;
-    this.SCENE_WIDTH = Game.SCENE_WIDTH;
-    this.init();
-    Utils.log('Enemies spawned');
+  constructor(name: string) {
+    super(name);
+    this.onAwake();
+  }
+
+  onAwake() {
+    this.htmlElement = document.querySelector('.Enemies');
+    this.spawnRandom();
+    this.transform.position = new Vector3(
+      this.htmlElement.offsetLeft,
+      this.htmlElement.offsetTop,
+      0,
+    );
+    this.maxMovementX =
+      Game.SCENE_WIDTH - this.htmlElement.getBoundingClientRect().width - 16;
+    super.onAwake();
+  }
+
+  onStart() {
+    this.move();
+    setInterval(() => {
+      this.shoot();
+    }, 1000);
   }
 
   checkCollision = (element: HTMLElement) => {
@@ -30,7 +43,10 @@ export class Enemies {
     );
     if (collided.length > 0) {
       const playerElement = collided[0];
-      this.player.damage();
+      const player = Game.findGameObject('SpaceShip');
+      if (player) {
+        player.damage();
+      }
       playerElement.classList.add('Damaged');
       setTimeout(() => {
         playerElement.classList.remove('Damaged');
@@ -39,58 +55,39 @@ export class Enemies {
     return (collided || []).length > 0;
   };
 
-  move = () => {
-    let { enemiesWrapper, SCENE_WIDTH } = this;
+  move() {
+    let { htmlElement, maxMovementX, minMovementX } = this;
     /// we need to move the plaeyr into a specific direction
-    const targetMove = 25 * this.ENEMIES_DIRECTION;
-    const MAX = SCENE_WIDTH - enemiesWrapper.getBoundingClientRect().width;
-    const MIN = 16;
+    const targetMove = 25 * this.moveDirection;
     /// get the player current offset left
-    let { offsetLeft } = enemiesWrapper;
+    let { offsetLeft } = htmlElement;
     /// change it according to current direction
     offsetLeft += targetMove;
-    this.TARGET_ENEMIES_POSITION.left = Math.min(
-      MAX,
-      Math.max(MIN, offsetLeft),
+    this.transform.position.x = Math.min(
+      maxMovementX,
+      Math.max(minMovementX, offsetLeft),
     );
     if (
-      this.TARGET_ENEMIES_POSITION.left >= MAX - 15 ||
-      this.TARGET_ENEMIES_POSITION.left <= MIN + 15
+      this.transform.position.x >= maxMovementX ||
+      this.transform.position.x <= minMovementX
     ) {
-      this.ENEMIES_DIRECTION *= -1;
+      this.moveDirection *= -1;
       setTimeout(() => {
-        this.TARGET_ENEMIES_POSITION.top += 16 * 3;
-        this.ENEMIES_SPEED -= this.ENEMIES_SPEED / 8;
-        this.ENEMIES_SPEED = Math.max(500, this.ENEMIES_SPEED);
-      }, this.ENEMIES_SPEED / 2);
+        this.transform.position.y += 16 * 3;
+        this.movementSpeed -= this.movementSpeed / 8;
+        this.movementSpeed = Math.max(500, this.movementSpeed);
+      }, this.movementSpeed / 2);
     }
 
     setTimeout(() => {
       this.move();
-    }, this.ENEMIES_SPEED);
-  };
-  render = () => {
-    const { enemiesWrapper, TARGET_ENEMIES_POSITION } = this;
-    /// the enemies must be rendered in a simple way
-    /// moving them from left to right and viceversa
-    /// let's start with the simplest case - move to left each {x} seconds
-    let targetPosLeft = MathUtils.lerp(
-      enemiesWrapper.offsetLeft,
-      TARGET_ENEMIES_POSITION.left,
-      0.25,
-    );
-    let targetPosTop = MathUtils.lerp(
-      enemiesWrapper.offsetTop,
-      TARGET_ENEMIES_POSITION.top,
-      0.25,
-    );
-    enemiesWrapper.style.left = `${targetPosLeft}px`;
-    enemiesWrapper.style.top = `${targetPosTop}px`;
-  };
-  shoot = () => {
-    const { enemiesWrapper } = this;
+    }, this.movementSpeed);
+  }
+
+  shoot() {
+    const { htmlElement } = this;
     const bullet = document.createElement('div');
-    const enemies = enemiesWrapper.querySelectorAll('.Enemy');
+    const enemies = htmlElement.querySelectorAll('.Enemy');
     const randomEnemy =
       enemies[Math.floor(Math.random() * enemies.length - 1) + 1];
     if (!randomEnemy) {
@@ -98,8 +95,8 @@ export class Enemies {
     }
     const { offsetLeft, offsetTop } = randomEnemy as any;
     bullet.classList.add('EnemyBullet');
-    bullet.style.left = `${offsetLeft + enemiesWrapper.offsetLeft + 21.5}px`;
-    bullet.style.top = `${offsetTop + enemiesWrapper.offsetTop + 48}px`;
+    bullet.style.left = `${offsetLeft + htmlElement.offsetLeft + 21.5}px`;
+    bullet.style.top = `${offsetTop + htmlElement.offsetTop + 48}px`;
     Game.scene.appendChild(bullet);
     bullet.classList.add('Shooted');
     const thisInterval = setInterval(() => {
@@ -116,8 +113,9 @@ export class Enemies {
         clearInterval(thisInterval);
       }
     }, 10);
-  };
-  spawnRandom = () => {
+  }
+
+  spawnRandom() {
     let result = '';
     for (let i = 0; i < Math.floor(Math.random() * 6 + 3); i++) {
       for (let j = 0; j < 18; j++) {
@@ -126,19 +124,6 @@ export class Enemies {
         }</div>`;
       }
     }
-    this.enemiesWrapper.innerHTML = result;
-  };
-
-  init = () => {
-    this.enemiesWrapper = document.querySelector('.Enemies');
-    this.TARGET_ENEMIES_POSITION = {
-      left: this.enemiesWrapper.offsetLeft,
-      top: this.enemiesWrapper.offsetTop,
-    };
-    this.spawnRandom();
-    this.move();
-    setInterval(() => {
-      this.shoot();
-    }, 1000);
-  };
+    this.htmlElement.innerHTML = result;
+  }
 }

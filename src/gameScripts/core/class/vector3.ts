@@ -12,4 +12,8 @@ export class Vector3 {
     this.y = y;
     this.z = z;
   }
+
+  toString() {
+    return `[x: ${this.x}, y: ${this.y}, z: ${this.z}]`;
+  }
 }

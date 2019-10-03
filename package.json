@@ -1,0 +1,36 @@
+{
+  "name": "node-typescript-boilerplate",
+  "version": "0.0.0",
+  "description": "Minimalistic boilerplate to quick-start Node.js development in TypeScript.",
+  "engines": {
+    "node": ">= 10.13 <11"
+  },
+  "devDependencies": {
+    "@types/jest": "^24.0.18",
+    "@types/node": "^10.14.17",
+    "copyfiles": "^2.1.1",
+    "jest": "~24.9.0",
+    "prettier": "~1.18.2",
+    "rimraf": "^3.0.0",
+    "ts-jest": "^24.0.0",
+    "ts-loader": "^6.2.0",
+    "tslint": "~5.19.0",
+    "tslint-config-prettier": "1.18.0",
+    "tslint-microsoft-contrib": "~6.2.0",
+    "tsutils": "~3.17.0",
+    "typescript": "^3.6.3",
+    "webpack": "^4.41.0",
+    "webpack-cli": "^3.3.9"
+  },
+  "scripts": {
+    "build-dev": "copyfiles src/assets/**/* *.html src/**/*.css build/ && npx webpack --mode development",
+    "build:watch": "npm run build-dev"
+  },
+  "author": "Jakub Synowiec <github@jakubsynowiec.info>",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "babel-polyfill": "^6.26.0",
+    "commonjs": "0.0.1",
+    "tslib": "~1.10.0"
+  }
+}

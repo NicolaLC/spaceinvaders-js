@@ -1,5 +1,5 @@
 const path = require('path');
-
+const CopyPlugin = require('copy-webpack-plugin');
 module.exports = {
   entry: './src/gameScripts/main.ts',
   devtool: "source-map",
@@ -19,5 +19,15 @@ module.exports = {
     filename: 'bundle.js',
     path: path.resolve(__dirname, 'build'),
   },
-  watch: true
+  plugins: [
+    new CopyPlugin([
+      { from: 'index.html', to: '' },
+      { from: 'src/assets', to: 'assets' },
+      { from: 'src/**/*.css', to: 'gameStyles', flatten: true }
+    ]),
+  ],
+  watch: true,
+  watchOptions: {
+    ignored: '/node_modules/'
+  }
 };

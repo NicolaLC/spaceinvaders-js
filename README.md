@@ -1,5 +1,11 @@
 ## TODO
 
+Before:
+
+1. Fix webpack html and css copy
+
+After:
+
 1. Bullet as GameObject
 2. Game Object automatism
 3. htmlElement automatism

@@ -92,7 +92,7 @@ h1 b {
   z-index: 11;
 }
 
-.GameScene .EnemyBullet {
+.GameScene .EnemiesBullet {
   width: 5px;
   height: 20px;
   background: red;

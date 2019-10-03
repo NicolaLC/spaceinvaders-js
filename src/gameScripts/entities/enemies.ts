@@ -94,7 +94,7 @@ export class Enemies extends GameObject {
       return;
     }
     const { offsetLeft, offsetTop } = randomEnemy as any;
-    bullet.classList.add('EnemyBullet');
+    bullet.classList.add('EnemiesBullet');
     bullet.style.left = `${offsetLeft + htmlElement.offsetLeft + 21.5}px`;
     bullet.style.top = `${offsetTop + htmlElement.offsetTop + 48}px`;
     Game.scene.appendChild(bullet);

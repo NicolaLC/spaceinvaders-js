@@ -1,4 +1,6 @@
 import { Game } from '../game';
+import { Utils } from '../core/class/utils';
+import { MathUtils } from '../core/class/math-utils';
 /**
  * PLAYER PROTOTYPE
  */
@@ -19,7 +21,7 @@ export class Enemies {
     this.game = game;
     this.SCENE_WIDTH = game.SCENE_WIDTH;
     this.init();
-    game.utils.log('Enemies spawned');
+    Utils.log('Enemies spawned');
   }
 
   checkCollision = (element: HTMLElement) => {
@@ -71,16 +73,15 @@ export class Enemies {
   };
   render = () => {
     const { enemiesWrapper, TARGET_ENEMIES_POSITION, game } = this;
-    const { lerp } = game.utils;
     /// the enemies must be rendered in a simple way
     /// moving them from left to right and viceversa
     /// let's start with the simplest case - move to left each {x} seconds
-    let targetPosLeft = lerp(
+    let targetPosLeft = MathUtils.lerp(
       enemiesWrapper.offsetLeft,
       TARGET_ENEMIES_POSITION.left,
       0.25,
     );
-    let targetPosTop = lerp(
+    let targetPosTop = MathUtils.lerp(
       enemiesWrapper.offsetTop,
       TARGET_ENEMIES_POSITION.top,
       0.25,

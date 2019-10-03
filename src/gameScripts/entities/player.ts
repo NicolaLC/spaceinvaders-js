@@ -9,7 +9,6 @@ export class Player extends GameObject {
   // constants
   currentLife: number = 3;
   shootInterval: any = null;
-  htmlElement: HTMLElement;
   game: Game;
   inputManager: Input;
 
@@ -67,14 +66,6 @@ export class Player extends GameObject {
       }
       this.shootInterval = null;
     }
-    /// let's animate the player using a Lerp function
-    const targetPos = game.utils.lerp(
-      htmlElement.offsetLeft,
-      this.transform.position.x,
-      0.75,
-    );
-    /// set the player position
-    htmlElement.style.left = `${targetPos}px`;
   }
 
   public damage() {

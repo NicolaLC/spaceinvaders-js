@@ -1,5 +1,5 @@
-import { Utils } from './core/utils';
-import { Enemies } from './entities/enemies.prototype';
+import { Utils } from './core/class/utils';
+import { Enemies } from './entities/enemies';
 import { Player } from './entities/player';
 import { Input } from './core/class/keyboard-events';
 /**
@@ -19,7 +19,6 @@ export class Game {
   player: Player;
   enemies: Enemies;
   // CONSTANTS
-  utils: Utils = new Utils();
   FPS: number = 1000 / 60;
   SCENE_WIDTH: number = this.scene.getBoundingClientRect().width;
   inputManager: Input;
@@ -61,13 +60,13 @@ export class Game {
   };
 
   init = () => {
-    const { render, utils } = this;
-    utils.log(`Game core is ready ... `);
-    utils.log(`INIT player ... `);
+    const { render } = this;
+    Utils.log(`Game core is ready ... `);
+    Utils.log(`INIT player ... `);
     this.player = new Player(this);
-    utils.log(`INIT enemies ... `);
+    Utils.log(`INIT enemies ... `);
     this.enemies = new Enemies(this.player, this);
-    utils.log(`Settings game core loop ... `);
+    Utils.log(`Settings game core loop ... `);
     render();
   };
 }

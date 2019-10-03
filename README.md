@@ -4,6 +4,7 @@
 2. Game Object automatism
 3. htmlElement automatism
 4. Enemies as gameObject
+5. Sprite management
 
 ## TODO GAME
 

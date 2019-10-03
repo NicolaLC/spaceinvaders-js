@@ -54,15 +54,15 @@ export class Enemies {
       Math.max(MIN, offsetLeft),
     );
     if (
-      this.TARGET_ENEMIES_POSITION.left >= MAX ||
-      this.TARGET_ENEMIES_POSITION.left <= MIN
+      this.TARGET_ENEMIES_POSITION.left >= MAX - 15 ||
+      this.TARGET_ENEMIES_POSITION.left <= MIN + 15
     ) {
       this.ENEMIES_DIRECTION *= -1;
       setTimeout(() => {
         this.TARGET_ENEMIES_POSITION.top += 16 * 3;
         this.ENEMIES_SPEED -= this.ENEMIES_SPEED / 8;
         this.ENEMIES_SPEED = Math.max(500, this.ENEMIES_SPEED);
-      }, this.ENEMIES_SPEED - 10);
+      }, this.ENEMIES_SPEED / 2);
     }
 
     setTimeout(() => {
@@ -70,7 +70,7 @@ export class Enemies {
     }, this.ENEMIES_SPEED);
   };
   render = () => {
-    const { enemiesWrapper, TARGET_ENEMIES_POSITION, game } = this;
+    const { enemiesWrapper, TARGET_ENEMIES_POSITION } = this;
     /// the enemies must be rendered in a simple way
     /// moving them from left to right and viceversa
     /// let's start with the simplest case - move to left each {x} seconds

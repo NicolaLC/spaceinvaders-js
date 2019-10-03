@@ -61,7 +61,7 @@ export class Game {
     Utils.log(`INIT player ... `);
     this.player = new Player();
     Utils.log(`INIT enemies ... `);
-    this.enemies = new Enemies(this.player, this);
+    this.enemies = new Enemies(this.player);
     Utils.log(`Settings game core loop ... `);
     render();
   };

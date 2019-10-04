@@ -19,15 +19,20 @@ export class GameObjectFactory {
     this.id = id;
     this.properties = properties;
     this.gameObject = gameObject;
-    this.create();
   }
 
-  private create() {
+  destroy() {
+    this.htmlRef.parentElement.removeChild(this.htmlRef);
+  }
+
+  create() {
     const { properties, gameObject } = this;
     this.htmlRef = document.createElement('div');
     this.htmlRef.classList.add(`${properties.className}`);
     this.htmlRef.style.left = `${gameObject.transform.position.x}px`;
     this.htmlRef.style.top = `${gameObject.transform.position.y}px`;
+    this.htmlRef.id = this.id;
+    this.htmlRef.innerHTML = this.gameObject.customGameObjectContent();
     (properties.parent ? properties.parent : Game.scene).appendChild(this.htmlRef);
   }
 

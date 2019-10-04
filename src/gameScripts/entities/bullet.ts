@@ -9,13 +9,16 @@ export class Bullet extends GameObject {
   checkCollisionWith: string = '';
   direction: Vector3;
   bulletSpeed: number;
-
-  constructor(name: string, checkCollisionWith: string, position: Vector3, direction: Vector3, bulletSpeed: number = 100) {
+  destroyTimeout: any;
+  constructor(name: string, checkCollisionWith: string, position: Vector3, direction: Vector3, bulletSpeed: number = 50) {
     super(name, { className: 'Bullet', parent: Game.scene }, position);
     this.direction = direction;
     this.checkCollisionWith = checkCollisionWith;
     this.bulletSpeed = bulletSpeed;
     this.onAwake();
+    this.destroyTimeout = setTimeout(() => {
+      super.onDestroy();
+    }, 1000);
   }
 
   checkCollision() {
@@ -24,14 +27,13 @@ export class Bullet extends GameObject {
     let collided = document.elementsFromPoint(left, top);
     collided = collided.filter(c => c.className.indexOf(checkCollisionWith) > -1);
     if (collided.length > 0) {
-      const target = collided[0];
-      target.classList.remove(checkCollisionWith);
-      target.classList.add('Destroyed');
-      Game.scene.removeChild(this.htmlElement);
-
-      setTimeout(() => {
-        Game.scene.removeChild(target);
-      }, 500)
+      const targetHTML = collided[0];
+      const targetGO = Game.findGameObjectByHtml(targetHTML);
+      if (targetGO && !targetGO.destroyed) {
+        clearTimeout(this.destroyTimeout);
+        super.onDestroy();
+        targetGO.onCollisionEnter(this);
+      }
     }
   };
 

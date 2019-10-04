@@ -30,7 +30,7 @@ export class Player extends GameObject {
       if (!this.shootInterval) {
         this.shootInterval = setInterval(() => {
           this.shoot();
-        }, 100);
+        }, 500);
         this.shoot();
       }
     } else {

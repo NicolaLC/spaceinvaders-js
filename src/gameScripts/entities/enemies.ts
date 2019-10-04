@@ -1,6 +1,7 @@
 import { Game } from '../game';
 import { GameObject } from '../core/class/GameObject/game-object';
 import { Vector3 } from '../core/class/vector3';
+import { Enemy } from './enemy';
 /**
  * PLAYER PROTOTYPE
  */
@@ -9,14 +10,13 @@ export class Enemies extends GameObject {
   movementSpeed: number = 2000;
   maxMovementX: number = 0;
   minMovementX: number = 25;
-
+  enemiesGO: Enemy[] = [];
   constructor(name: string) {
-    super(name, { className: 'Enemies' }, new Vector3(screen.width / 4, 200, 0));
+    super(name, { className: 'Enemies' }, new Vector3(0, 0, 0));
     this.onAwake();
   }
 
   onAwake() {
-
     this.htmlElement = document.querySelector('.Enemies');
     this.spawnRandom();
     this.transform.position = new Vector3(
@@ -59,7 +59,7 @@ export class Enemies extends GameObject {
   move() {
     let { htmlElement, maxMovementX, minMovementX } = this;
     /// we need to move the plaeyr into a specific direction
-    const targetMove = 25 * this.moveDirection;
+    const targetMove = 64 * this.moveDirection;
     /// get the player current offset left
     let { offsetLeft } = htmlElement;
     /// change it according to current direction
@@ -69,8 +69,8 @@ export class Enemies extends GameObject {
       Math.max(minMovementX, offsetLeft),
     );
     if (
-      this.transform.position.x >= maxMovementX ||
-      this.transform.position.x <= minMovementX
+      this.transform.position.x > maxMovementX ||
+      this.transform.position.x < minMovementX
     ) {
       this.moveDirection *= -1;
       setTimeout(() => {
@@ -86,6 +86,7 @@ export class Enemies extends GameObject {
   }
 
   shoot() {
+    return;
     const { htmlElement } = this;
     const bullet = document.createElement('div');
     const enemies = htmlElement.querySelectorAll('.Enemy');
@@ -117,14 +118,12 @@ export class Enemies extends GameObject {
   }
 
   spawnRandom() {
-    let result = '';
-    for (let i = 0; i < Math.floor(Math.random() * 6 + 3); i++) {
-      for (let j = 0; j < 18; j++) {
-        result += `<div class="Enemy">${
-          Math.floor(Math.random() * 3) > 1 ? '👽' : '👾'
-          }</div>`;
+    for (let i = 0; i < Math.floor(Math.random() * 5 + 1); i++) {
+      for (let j = 0; j < 10; j++) {
+        this.enemiesGO.push(
+          new Enemy(`Enemy${i}${j}`, this.htmlElement)
+        );
       }
     }
-    this.htmlElement.innerHTML = result;
   }
 }

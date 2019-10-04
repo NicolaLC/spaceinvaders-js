@@ -22,15 +22,29 @@ export class Game {
   }
 
   render() {
-    const { render } = this;
+    const { gameObjects } = Game;
+    gameObjects.map((go: GameObject) => {
+
+      go.render();
+    });
     window.requestAnimationFrame(() => {
       this.render();
     });
   }
 
   init() {
-    Game.gameObjects.push(new Player('SpaceShip'), new Enemies('Invaders'));
+    new Player('SpaceShip')
+    new Enemies('Invaders');
     this.render();
+  }
+
+  static registerGameObject(go: GameObject) {
+    this.gameObjects.push(go);
+  }
+
+  static unregisterGameObject(go: GameObject) {
+    const indexOf = this.gameObjects.indexOf(go);
+    this.gameObjects.splice(indexOf, 1);
   }
 
   static restart() {
@@ -40,5 +54,11 @@ export class Game {
   static findGameObject(withName: string) {
     const founded = Game.gameObjects.filter(g => g.name === withName);
     return founded ? founded[0] : null;
+  }
+
+  static findGameObjectByHtml(htmlElement: Element): GameObject | null {
+    const { id } = htmlElement;
+    const result = this.gameObjects.filter(go => !go.destroyed && go.id === id)
+    return result && result.length ? result[0] : null;
   }
 }

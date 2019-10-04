@@ -4,6 +4,7 @@ import { Utils } from '../utils';
 import { Vector3 } from '../vector3';
 import { MathUtils } from '../math-utils';
 import { GameObjectFactory, GameObjectFactoryProperties } from './game-object.factory';
+import { Game } from '../../../game';
 /**
  * GameObject
  *
@@ -17,9 +18,8 @@ export class GameObject {
   started: boolean = false;
   destroyed: boolean = false;
   htmlElement: HTMLElement;
+  id: string;
   [key: string]: any;
-  protected id: string;
-  protected lastAnimationFrame: number = 0;
   protected factory: GameObjectFactory;
 
   constructor(name: string, settings: GameObjectFactoryProperties, position?: Vector3) {
@@ -31,21 +31,27 @@ export class GameObject {
     };
     this.name = name;
     this.factory = new GameObjectFactory(this.id, settings, this);
+    this.factory.create();
     this.htmlElement = this.factory.htmlRef;
+    Game.registerGameObject(this)
     Utils.log(`[${name}] >>> spawned`);
+  }
+
+  customGameObjectContent?(): string {
+    return '';
   }
 
   onAwake() {
     Utils.log(`[${this.name}] >>> onAwake`);
-    this.render();
   }
-
   onStart?() {
     Utils.log(`[${this.name}] >>> onStart`);
   }
   onUpdate?() { }
+  onCollisionEnter?(collider: GameObject) { }
   onDestroy?() {
     Utils.log(`[${this.name}] >>> onDestroy`);
+    this.factory.destroy();
     window.cancelAnimationFrame(this.lastAnimationFrame);
     this.destroyed = true;
   }
@@ -64,26 +70,11 @@ export class GameObject {
       this.started = true;
       this.onStart();
     }
-
-    this.lastAnimationFrame = window.requestAnimationFrame(() => {
-      this.render();
-    });
   }
 
   private updatePosition() {
-    /// let's animate the player using a Lerp function
-    const targetPosX = MathUtils.lerp(
-      this.htmlElement.offsetLeft,
-      this.transform.position.x,
-      0.75,
-    );
-    const targetPosY = MathUtils.lerp(
-      this.htmlElement.offsetTop,
-      this.transform.position.y,
-      0.75,
-    );
     /// set the player position
-    this.htmlElement.style.left = `${targetPosX}px`;
-    this.htmlElement.style.top = `${targetPosY}px`;
+    this.htmlElement.style.left = `${this.transform.position.x}px`;
+    this.htmlElement.style.top = `${this.transform.position.y}px`;
   }
 }

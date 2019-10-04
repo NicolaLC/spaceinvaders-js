@@ -31,6 +31,7 @@
   "dependencies": {
     "babel-polyfill": "^6.26.0",
     "commonjs": "0.0.1",
+    "guid-typescript": "^1.0.9",
     "tslib": "~1.10.0"
   }
 }

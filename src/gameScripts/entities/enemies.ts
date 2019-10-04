@@ -1,5 +1,5 @@
 import { Game } from '../game';
-import { GameObject } from '../core/class/game-object';
+import { GameObject } from '../core/class/GameObject/game-object';
 import { Vector3 } from '../core/class/vector3';
 /**
  * PLAYER PROTOTYPE
@@ -8,14 +8,15 @@ export class Enemies extends GameObject {
   moveDirection: number = 1;
   movementSpeed: number = 2000;
   maxMovementX: number = 0;
-  minMovementX: number = 16;
-  // CONSTANTS
+  minMovementX: number = 25;
+
   constructor(name: string) {
-    super(name);
+    super(name, { className: 'Enemies' }, new Vector3(screen.width / 4, 200, 0));
     this.onAwake();
   }
 
   onAwake() {
+
     this.htmlElement = document.querySelector('.Enemies');
     this.spawnRandom();
     this.transform.position = new Vector3(
@@ -24,7 +25,7 @@ export class Enemies extends GameObject {
       0,
     );
     this.maxMovementX =
-      Game.SCENE_WIDTH - this.htmlElement.getBoundingClientRect().width - 16;
+      Game.SCENE_WIDTH - this.htmlElement.getBoundingClientRect().width - 25;
     super.onAwake();
   }
 
@@ -121,7 +122,7 @@ export class Enemies extends GameObject {
       for (let j = 0; j < 18; j++) {
         result += `<div class="Enemy">${
           Math.floor(Math.random() * 3) > 1 ? '👽' : '👾'
-        }</div>`;
+          }</div>`;
       }
     }
     this.htmlElement.innerHTML = result;

@@ -1,8 +1,9 @@
-import { Transform } from '../interfaces/transform';
+import { Transform } from '../../interfaces/transform';
 import { Script } from 'vm';
-import { Utils } from './utils';
-import { Vector3 } from './vector3';
-import { MathUtils } from './math-utils';
+import { Utils } from '../utils';
+import { Vector3 } from '../vector3';
+import { MathUtils } from '../math-utils';
+import { GameObjectFactory, GameObjectFactoryProperties } from './game-object.factory';
 /**
  * GameObject
  *
@@ -17,15 +18,20 @@ export class GameObject {
   destroyed: boolean = false;
   htmlElement: HTMLElement;
   [key: string]: any;
+  protected id: string;
   protected lastAnimationFrame: number = 0;
+  protected factory: GameObjectFactory;
 
-  constructor(name: string) {
+  constructor(name: string, settings: GameObjectFactoryProperties, position?: Vector3) {
+    this.id = Utils.guid();
     this.transform = {
-      position: new Vector3(0, 0, 0),
+      position: position || new Vector3(0, 0, 0),
       rotation: new Vector3(0, 0, 0),
       scale: new Vector3(0, 0, 0),
     };
     this.name = name;
+    this.factory = new GameObjectFactory(this.id, settings, this);
+    this.htmlElement = this.factory.htmlRef;
     Utils.log(`[${name}] >>> spawned`);
   }
 
@@ -37,7 +43,7 @@ export class GameObject {
   onStart?() {
     Utils.log(`[${this.name}] >>> onStart`);
   }
-  onUpdate?() {}
+  onUpdate?() { }
   onDestroy?() {
     Utils.log(`[${this.name}] >>> onDestroy`);
     window.cancelAnimationFrame(this.lastAnimationFrame);

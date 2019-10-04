@@ -1,6 +1,6 @@
 import { Enemies } from './entities/enemies';
 import { Player } from './entities/player';
-import { GameObject } from './core/class/game-object';
+import { GameObject } from './core/class/GameObject/game-object';
 /**
  * GAME.js
  *

@@ -1,7 +1,8 @@
 import { Game } from '../game';
-import { GameObject } from '../core/class/game-object';
+import { GameObject } from '../core/class/GameObject/game-object';
 import { KEYS, InputManager } from '../core/class/keyboard-events';
 import { Vector3 } from '../core/class/vector3';
+import { Bullet } from './bullet';
 /**
  * PLAYER PROTOTYPE
  */
@@ -11,33 +12,8 @@ export class Player extends GameObject {
   shootInterval: any = null;
 
   constructor(name: string) {
-    super(name);
+    super(name, { className: 'Player' }, new Vector3(Game.SCENE_WIDTH / 2 - 24, 700, 0));
     this.onAwake();
-  }
-
-  checkCollision = (element: HTMLElement) => {
-    const { top, left } = element.getBoundingClientRect();
-    let collided = document.elementsFromPoint(left, top);
-    collided = collided.filter(c => c.className.indexOf('Enemy') > -1);
-    if (collided.length > 0) {
-      const enemy = collided[0];
-      enemy.classList.remove('Enemy');
-      enemy.classList.add('Destroyed');
-      enemy.innerHTML = '💥';
-      setTimeout(() => {
-        enemy.innerHTML = '';
-      }, 1000);
-    }
-    return (collided || []).length > 0;
-  };
-
-  onStart() {
-    this.htmlElement = document.querySelector('.Player');
-    this.transform.position = new Vector3(
-      this.htmlElement.offsetLeft,
-      this.htmlElement.offsetTop,
-      0,
-    );
   }
 
   onUpdate() {
@@ -75,19 +51,9 @@ export class Player extends GameObject {
 
   private move(direction: 1 | -1) {
     let { htmlElement } = this;
-    if (!htmlElement) {
-      return;
-    }
-    /// we need to move the plaeyr into a specific direction
     const targetMove = 50 * direction;
-    /// get the player current offset left
     let { offsetLeft } = htmlElement;
-    /// change it according to current direction
     offsetLeft += targetMove;
-    /// so set a targetPlayerPosition instead of changing it's style
-    /// we need to limit the player position to the scene boundaries
-    /// we need also to consider the player width
-    /// 16 = 1rem - the padding of our scene
     this.transform.position.x = Math.min(
       Game.SCENE_WIDTH - htmlElement.getBoundingClientRect().width,
       Math.max(16, offsetLeft),
@@ -96,25 +62,7 @@ export class Player extends GameObject {
 
   private shoot() {
     const { htmlElement } = this;
-    const bullet = document.createElement('div');
-    bullet.classList.add('Bullet');
-    bullet.style.left = `${htmlElement.offsetLeft + 21.5}px`;
-    bullet.style.top = `700px`;
-    Game.scene.appendChild(bullet);
-    bullet.classList.add('Shooted');
-    const thisInterval = setInterval(() => {
-      const collides = this.checkCollision(bullet);
-      if (collides) {
-        Game.scene.removeChild(bullet);
-        clearInterval(thisInterval);
-        return;
-      }
-      const bTop = bullet.getBoundingClientRect().top;
-      bullet.style.top = `-${bTop}px`;
-      if (bTop <= 100) {
-        Game.scene.removeChild(bullet);
-        clearInterval(thisInterval);
-      }
-    }, 10);
+    // instantiate new bullet
+    new Bullet('Bullet', 'Enemy', new Vector3(htmlElement.offsetLeft + 21.5, 700, 0), new Vector3(0, -1, 0));
   }
 }

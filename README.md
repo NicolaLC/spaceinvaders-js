@@ -1,10 +1,17 @@
+## NOTES
+Bullet should collide with a GameObject instance and not with an htmlElement, the problem is than the collision detection is between htmlElements, so I need to associate any htmlElement with a gameObject.
+
+### Solution
+
+Add an id to the gameObject class and:
+
+1. Instantiate html with random id
+2. Each GameObject must have its own htmlElement
+  * I need to convert the enemies class with and array of Enemy game object
+3. the core Game class must provide a **getGameObjectById(id: string)** method to get the gameObject reference
+
+
 ## TODO
-
-Before:
-
-1. Fix webpack html and css copy
-
-After:
 
 1. Bullet as GameObject
 2. Game Object automatism

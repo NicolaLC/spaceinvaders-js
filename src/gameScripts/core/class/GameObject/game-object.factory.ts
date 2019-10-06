@@ -6,6 +6,7 @@ import { GameObject } from "./game-object";
  */
 export interface GameObjectFactoryProperties {
   className: string;
+  images?: any[];
   parent?: HTMLElement;
 }
 export class GameObjectFactory {
@@ -14,6 +15,7 @@ export class GameObjectFactory {
 
   private id: string;
   private gameObject: GameObject;
+  private currentImage = new Image();
 
   constructor(id: string, properties: GameObjectFactoryProperties, gameObject: GameObject) {
     this.id = id;
@@ -27,13 +29,23 @@ export class GameObjectFactory {
 
   create() {
     const { properties, gameObject } = this;
-    this.htmlRef = document.createElement('div');
-    this.htmlRef.classList.add(`${properties.className}`);
-    this.htmlRef.style.left = `${gameObject.transform.position.x}px`;
-    this.htmlRef.style.top = `${gameObject.transform.position.y}px`;
-    this.htmlRef.id = this.id;
-    this.htmlRef.innerHTML = this.gameObject.customGameObjectContent();
-    (properties.parent ? properties.parent : Game.scene).appendChild(this.htmlRef);
+    const { transform } = gameObject;
+    if (properties.images) {
+      var spriteImage = new Image();
+      spriteImage.src = properties.images[0];
+      this.currentImage = spriteImage;
+      spriteImage.onload = function () {
+        Game.sceneContext.drawImage(spriteImage, transform.position.x, transform.position.y, transform.scale.x, transform.scale.y);
+      };
+    }
+  }
+
+  render() {
+    const { gameObject, currentImage, properties } = this;
+    const { transform } = gameObject;
+    if (properties.images) {
+      Game.sceneContext.drawImage(currentImage, transform.position.x, transform.position.y, transform.scale.x, transform.scale.y);
+    }
   }
 
 }

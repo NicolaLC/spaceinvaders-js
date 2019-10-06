@@ -40,6 +40,13 @@ h1 b {
   height: calc(800px - 2rem);
   position: relative;
   padding: 1rem;
+  z-index: 10001;
+}
+
+.GameScene canvas {
+  width: 100%;
+  height: 100%;
+  z-index: 10001;
 }
 
 .GameScene .Enemies {
@@ -130,7 +137,7 @@ h1 b {
   position: fixed;
   left: calc(50% - 250px);
   bottom: -350px;
-  z-index: 0;
+  z-index: -1;
   background: url('../assets/images/planet-earth.png');
   background-repeat: no-repeat;
   background-size: cover;

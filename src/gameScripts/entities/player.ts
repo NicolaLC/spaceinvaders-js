@@ -3,6 +3,7 @@ import { GameObject } from '../core/class/GameObject/game-object';
 import { KEYS, InputManager } from '../core/class/keyboard-events';
 import { Vector3 } from '../core/class/vector3';
 import { Bullet } from './bullet';
+import { MathUtils } from '../core/class/math-utils';
 /**
  * PLAYER PROTOTYPE
  */
@@ -12,15 +13,21 @@ export class Player extends GameObject {
   shootInterval: any = null;
 
   constructor(name: string) {
-    super(name, { className: 'Player' }, new Vector3(Game.SCENE_WIDTH / 2 - 24, 700, 0));
+    super(name,
+      {
+        className: 'Player',
+        images: ['assets/images/spaceship.svg']
+      },
+      {
+        position: new Vector3(Game.scene.width / 2 - 32, Game.scene.height - 64, 0),
+        rotation: new Vector3(0, 0, 0),
+        scale: new Vector3(64, 64, 0)
+      }
+    );
     this.onAwake();
   }
 
   onUpdate() {
-    let { htmlElement } = this;
-    if (!htmlElement) {
-      return;
-    }
     if (InputManager.keyPressed(KEYS.LEFT)) {
       this.move(-1);
     } else if (InputManager.keyPressed(KEYS.RIGHT)) {
@@ -50,19 +57,14 @@ export class Player extends GameObject {
   }
 
   private move(direction: 1 | -1) {
-    let { htmlElement } = this;
     const targetMove = 50 * direction;
-    let { offsetLeft } = htmlElement;
-    offsetLeft += targetMove;
-    this.transform.position.x = Math.min(
-      Game.SCENE_WIDTH - htmlElement.getBoundingClientRect().width,
-      Math.max(16, offsetLeft),
-    );
+    // this.transform.position.x += targetMove;
+    this.transform.position.x = MathUtils.lerp(this.transform.position.x, this.transform.position.x + targetMove, .1);
   }
 
   private shoot() {
-    const { htmlElement } = this;
+    const { transform } = this;
     // instantiate new bullet
-    new Bullet('Bullet', 'Enemy', new Vector3(htmlElement.offsetLeft + 21.5, 700, 0), new Vector3(0, -1, 0));
+    new Bullet('Bullet', 'Enemy', new Vector3(transform.position.x - transform.scale.x / 2, 700, 0), new Vector3(0, -1, 0));
   }
 }

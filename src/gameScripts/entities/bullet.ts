@@ -11,7 +11,14 @@ export class Bullet extends GameObject {
   bulletSpeed: number;
   destroyTimeout: any;
   constructor(name: string, checkCollisionWith: string, position: Vector3, direction: Vector3, bulletSpeed: number = 50) {
-    super(name, { className: 'Bullet', parent: Game.scene }, position);
+    super(
+      name,
+      { className: 'Bullet', images: [], parent: Game.scene },
+      {
+        position,
+        rotation: new Vector3(0, 0, 0),
+        scale: new Vector3(1, 1, 1)
+      });
     this.direction = direction;
     this.checkCollisionWith = checkCollisionWith;
     this.bulletSpeed = bulletSpeed;

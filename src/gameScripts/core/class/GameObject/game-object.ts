@@ -22,12 +22,12 @@ export class GameObject {
   [key: string]: any;
   protected factory: GameObjectFactory;
 
-  constructor(name: string, settings: GameObjectFactoryProperties, position?: Vector3) {
+  constructor(name: string, settings: GameObjectFactoryProperties, transform?: Transform) {
     this.id = Utils.guid();
-    this.transform = {
-      position: position || new Vector3(0, 0, 0),
+    this.transform = transform || {
+      position: new Vector3(0, 0, 0),
       rotation: new Vector3(0, 0, 0),
-      scale: new Vector3(0, 0, 0),
+      scale: new Vector3(1, 1, 1),
     };
     this.name = name;
     this.factory = new GameObjectFactory(this.id, settings, this);
@@ -59,22 +59,12 @@ export class GameObject {
     if (this.destroyed) {
       return;
     }
-
-    if (this.htmlElement) {
-      this.updatePosition();
-    }
-
+    this.factory.render();
     if (this.started) {
       this.onUpdate();
     } else {
       this.started = true;
       this.onStart();
     }
-  }
-
-  private updatePosition() {
-    /// set the player position
-    this.htmlElement.style.left = `${this.transform.position.x}px`;
-    this.htmlElement.style.top = `${this.transform.position.y}px`;
   }
 }

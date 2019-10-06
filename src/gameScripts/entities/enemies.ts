@@ -2,6 +2,7 @@ import { Game } from '../game';
 import { GameObject } from '../core/class/GameObject/game-object';
 import { Vector3 } from '../core/class/vector3';
 import { Enemy } from './enemy';
+import { MathUtils } from '../core/class/math-utils';
 /**
  * PLAYER PROTOTYPE
  */
@@ -12,20 +13,13 @@ export class Enemies extends GameObject {
   minMovementX: number = 25;
   enemiesGO: Enemy[] = [];
   constructor(name: string) {
-    super(name, { className: 'Enemies' }, new Vector3(0, 0, 0));
+    super(name, { className: 'Enemies' });
     this.onAwake();
   }
 
   onAwake() {
-    this.htmlElement = document.querySelector('.Enemies');
     this.spawnRandom();
-    this.transform.position = new Vector3(
-      this.htmlElement.offsetLeft,
-      this.htmlElement.offsetTop,
-      0,
-    );
-    this.maxMovementX =
-      Game.SCENE_WIDTH - this.htmlElement.getBoundingClientRect().width - 25;
+    this.maxMovementX = Game.scene.width - 64;
     super.onAwake();
   }
 
@@ -57,24 +51,26 @@ export class Enemies extends GameObject {
   };
 
   move() {
-    let { htmlElement, maxMovementX, minMovementX } = this;
+    let { maxMovementX, minMovementX } = this;
     /// we need to move the plaeyr into a specific direction
     const targetMove = 64 * this.moveDirection;
+    this.transform.position.x += targetMove;
     /// get the player current offset left
-    let { offsetLeft } = htmlElement;
     /// change it according to current direction
-    offsetLeft += targetMove;
-    this.transform.position.x = Math.min(
-      maxMovementX,
-      Math.max(minMovementX, offsetLeft),
-    );
+    this.enemiesGO.map(ego => {
+      ego.transform.position.x += targetMove;
+    });
     if (
       this.transform.position.x > maxMovementX ||
       this.transform.position.x < minMovementX
     ) {
+      console.log(1);
       this.moveDirection *= -1;
       setTimeout(() => {
-        this.transform.position.y += 16 * 3;
+        this.transform.position.y += 64;
+        this.enemiesGO.map(ego => {
+          ego.transform.position.y += 64;
+        });
         this.movementSpeed -= this.movementSpeed / 8;
         this.movementSpeed = Math.max(500, this.movementSpeed);
       }, this.movementSpeed / 2);
@@ -121,8 +117,12 @@ export class Enemies extends GameObject {
     for (let i = 0; i < Math.floor(Math.random() * 5 + 1); i++) {
       for (let j = 0; j < 10; j++) {
         this.enemiesGO.push(
-          new Enemy(`Enemy${i}${j}`, this.htmlElement)
+          new Enemy(`Enemy${i}${j}`, new Vector3(64 * j, 64 * i, 0))
         );
+        if (i == 0) {
+          // remove the spaceship width to the maximum movement
+          this.maxMovementX -= 64;
+        }
       }
     }
   }

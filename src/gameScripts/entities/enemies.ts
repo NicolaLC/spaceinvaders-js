@@ -10,7 +10,7 @@ export class Enemies extends GameObject {
   moveDirection: number = 1;
   movementSpeed: number = 2000;
   maxMovementX: number = 0;
-  minMovementX: number = 25;
+  minMovementX: number = 0;
   enemiesGO: Enemy[] = [];
   constructor(name: string) {
     super(name, { className: 'Enemies' });
@@ -19,7 +19,7 @@ export class Enemies extends GameObject {
 
   onAwake() {
     this.spawnRandom();
-    this.maxMovementX = Game.scene.width - 64;
+    this.maxMovementX = Game.scene.width - 64 * 10;
     super.onAwake();
   }
 
@@ -64,7 +64,6 @@ export class Enemies extends GameObject {
       this.transform.position.x > maxMovementX ||
       this.transform.position.x < minMovementX
     ) {
-      console.log(1);
       this.moveDirection *= -1;
       setTimeout(() => {
         this.transform.position.y += 64;
@@ -119,10 +118,6 @@ export class Enemies extends GameObject {
         this.enemiesGO.push(
           new Enemy(`Enemy${i}${j}`, new Vector3(64 * j, 64 * i, 0))
         );
-        if (i == 0) {
-          // remove the spaceship width to the maximum movement
-          this.maxMovementX -= 64;
-        }
       }
     }
   }

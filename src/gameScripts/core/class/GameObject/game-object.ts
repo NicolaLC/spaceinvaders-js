@@ -3,7 +3,10 @@ import { Script } from 'vm';
 import { Utils } from '../utils';
 import { Vector3 } from '../vector3';
 import { MathUtils } from '../math-utils';
-import { GameObjectFactory, GameObjectFactoryProperties } from './game-object.factory';
+import {
+  GameObjectFactory,
+  GameObjectFactoryProperties,
+} from './game-object.factory';
 import { Game } from '../../../game';
 /**
  * GameObject
@@ -22,7 +25,11 @@ export class GameObject {
   [key: string]: any;
   protected factory: GameObjectFactory;
 
-  constructor(name: string, settings: GameObjectFactoryProperties, transform?: Transform) {
+  constructor(
+    name: string,
+    settings: GameObjectFactoryProperties,
+    transform?: Transform,
+  ) {
     this.id = Utils.guid();
     this.transform = transform || {
       position: new Vector3(0, 0, 0),
@@ -33,7 +40,7 @@ export class GameObject {
     this.factory = new GameObjectFactory(this.id, settings, this);
     this.factory.create();
     this.htmlElement = this.factory.htmlRef;
-    Game.registerGameObject(this)
+    Game.registerGameObject(this);
     Utils.log(`[${name}] >>> spawned`);
   }
 
@@ -41,20 +48,41 @@ export class GameObject {
     return '';
   }
 
+  checkCollision() {
+    if (!this.onCollisionEnter) {
+      return;
+    }
+    const { id } = this;
+    Game.gameObjects.map(go => {
+      if (go.id !== id) {
+        const collides = MathUtils.checkColisionBetween(
+          go.transform,
+          this.transform,
+        );
+        if (collides) {
+          this.onCollisionEnter(go);
+        }
+      }
+    });
+  }
+
   onAwake() {
     Utils.log(`[${this.name}] >>> onAwake`);
   }
+
   onStart?() {
     Utils.log(`[${this.name}] >>> onStart`);
   }
-  onUpdate?() { }
-  onCollisionEnter?(collider: GameObject) { }
+
+  onUpdate?() {}
+  onCollisionEnter?(collider?: GameObject) {}
   onDestroy?() {
     Utils.log(`[${this.name}] >>> onDestroy`);
     this.factory.destroy();
     window.cancelAnimationFrame(this.lastAnimationFrame);
     this.destroyed = true;
   }
+
   render?() {
     if (this.destroyed) {
       return;

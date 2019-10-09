@@ -13,22 +13,18 @@ export class Enemy extends GameObject {
       {
         position,
         rotation: new Vector3(0, 0, 0),
-        scale: new Vector3(64, 64, 0)
-      });
+        scale: new Vector3(64, 64, 0),
+      },
+    );
     super.onAwake();
   }
 
   onCollisionEnter(go: GameObject) {
     if (go instanceof Bullet) {
+      console.log(1111);
       this.destroyed = true;
-      this.htmlElement.classList.add('DestroyedEnemy');
-      this.transform.position = new Vector3(1.5, 1.5, 0);
-      setTimeout(() => {
-        this.htmlElement.innerHTML = '';
-        this.htmlElement.classList.remove('Enemy');
-        this.htmlElement.classList.remove('DestroyedEnemy');
-        Game.unregisterGameObject(this);
-      }, 500);
+      this.factory.destroy();
+      go.onDestroy();
     }
   }
 }

@@ -1,6 +1,5 @@
-import { Game } from "../../../game";
-import { GameObject } from "./game-object";
-
+import { Game } from '../../../game';
+import { GameObject } from './game-object';
 /**
  * @description utility class for GameObject factory
  */
@@ -17,14 +16,19 @@ export class GameObjectFactory {
   private gameObject: GameObject;
   private currentImage = new Image();
 
-  constructor(id: string, properties: GameObjectFactoryProperties, gameObject: GameObject) {
+  constructor(
+    id: string,
+    properties: GameObjectFactoryProperties,
+    gameObject: GameObject,
+  ) {
     this.id = id;
     this.properties = properties;
     this.gameObject = gameObject;
   }
 
   destroy() {
-    this.htmlRef.parentElement.removeChild(this.htmlRef);
+    Game.unregisterGameObject(this.gameObject);
+    delete this.gameObject;
   }
 
   create() {
@@ -34,8 +38,14 @@ export class GameObjectFactory {
       var spriteImage = new Image();
       spriteImage.src = properties.images[0];
       this.currentImage = spriteImage;
-      spriteImage.onload = function () {
-        Game.sceneContext.drawImage(spriteImage, transform.position.x, transform.position.y, transform.scale.x, transform.scale.y);
+      spriteImage.onload = () => {
+        Game.sceneContext.drawImage(
+          spriteImage,
+          transform.position.x,
+          transform.position.y,
+          transform.scale.x,
+          transform.scale.y,
+        );
       };
     }
   }
@@ -44,8 +54,13 @@ export class GameObjectFactory {
     const { gameObject, currentImage, properties } = this;
     const { transform } = gameObject;
     if (properties.images) {
-      Game.sceneContext.drawImage(currentImage, transform.position.x, transform.position.y, transform.scale.x, transform.scale.y);
+      Game.sceneContext.drawImage(
+        currentImage,
+        transform.position.x,
+        transform.position.y,
+        transform.scale.x,
+        transform.scale.y,
+      );
     }
   }
-
 }

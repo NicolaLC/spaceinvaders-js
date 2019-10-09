@@ -29,27 +29,6 @@ export class Enemies extends GameObject {
       this.shoot();
     }, 1000);
   }
-
-  checkCollision = (element: HTMLElement) => {
-    const { top, left } = element.getBoundingClientRect();
-    let collided = document.elementsFromPoint(left, top);
-    collided = collided.filter(
-      (c: HTMLElement) => c.className.indexOf('Player') > -1,
-    );
-    if (collided.length > 0) {
-      const playerElement = collided[0];
-      const player = Game.findGameObject('SpaceShip');
-      if (player) {
-        player.damage();
-      }
-      playerElement.classList.add('Damaged');
-      setTimeout(() => {
-        playerElement.classList.remove('Damaged');
-      }, 500);
-    }
-    return (collided || []).length > 0;
-  };
-
   move() {
     let { maxMovementX, minMovementX } = this;
     /// we need to move the plaeyr into a specific direction
@@ -82,41 +61,13 @@ export class Enemies extends GameObject {
 
   shoot() {
     return;
-    const { htmlElement } = this;
-    const bullet = document.createElement('div');
-    const enemies = htmlElement.querySelectorAll('.Enemy');
-    const randomEnemy =
-      enemies[Math.floor(Math.random() * enemies.length - 1) + 1];
-    if (!randomEnemy) {
-      return;
-    }
-    const { offsetLeft, offsetTop } = randomEnemy as any;
-    bullet.classList.add('EnemiesBullet');
-    bullet.style.left = `${offsetLeft + htmlElement.offsetLeft + 21.5}px`;
-    bullet.style.top = `${offsetTop + htmlElement.offsetTop + 48}px`;
-    Game.scene.appendChild(bullet);
-    bullet.classList.add('Shooted');
-    const thisInterval = setInterval(() => {
-      const collides = this.checkCollision(bullet);
-      if (collides) {
-        Game.scene.removeChild(bullet);
-        clearInterval(thisInterval);
-        return;
-      }
-      const bTop = bullet.getBoundingClientRect().top;
-      bullet.style.top = `${bTop}px`;
-      if (bTop >= 900) {
-        Game.scene.removeChild(bullet);
-        clearInterval(thisInterval);
-      }
-    }, 10);
   }
 
   spawnRandom() {
-    for (let i = 0; i < Math.floor(Math.random() * 5 + 1); i++) {
-      for (let j = 0; j < 10; j++) {
+    for (let i = 0; i < Math.floor(Math.random() * 10 + 1); i++) {
+      for (let j = 0; j < 15; j++) {
         this.enemiesGO.push(
-          new Enemy(`Enemy${i}${j}`, new Vector3(64 * j, 64 * i, 0))
+          new Enemy(`Enemy${i}${j}`, new Vector3(64 * j, 64 * i, 0)),
         );
       }
     }

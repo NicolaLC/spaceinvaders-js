@@ -13,16 +13,21 @@ export class Player extends GameObject {
   shootInterval: any = null;
 
   constructor(name: string) {
-    super(name,
+    super(
+      name,
       {
         className: 'Player',
-        images: ['assets/images/spaceship.svg']
+        images: ['assets/images/spaceship.svg'],
       },
       {
-        position: new Vector3(Game.scene.width / 2 - 32, Game.scene.height - 64, 0),
+        position: new Vector3(
+          Game.scene.width / 2 - 32,
+          Game.scene.height - 64,
+          0,
+        ),
         rotation: new Vector3(0, 0, 0),
-        scale: new Vector3(64, 64, 0)
-      }
+        scale: new Vector3(64, 64, 0),
+      },
     );
     this.onAwake();
   }
@@ -48,6 +53,12 @@ export class Player extends GameObject {
     }
   }
 
+  onCollisionEnter(go: GameObject) {
+    if (go instanceof Bullet) {
+      Game.restart();
+    }
+  }
+
   public damage() {
     this.currentLife--;
     if (this.currentLife <= 0) {
@@ -59,12 +70,21 @@ export class Player extends GameObject {
   private move(direction: 1 | -1) {
     const targetMove = 50 * direction;
     // this.transform.position.x += targetMove;
-    this.transform.position.x = MathUtils.lerp(this.transform.position.x, this.transform.position.x + targetMove, .1);
+    this.transform.position.x = MathUtils.lerp(
+      this.transform.position.x,
+      this.transform.position.x + targetMove,
+      0.1,
+    );
   }
 
   private shoot() {
     const { transform } = this;
     // instantiate new bullet
-    new Bullet('Bullet', 'Enemy', new Vector3(transform.position.x - transform.scale.x / 2, 700, 0), new Vector3(0, -1, 0));
+    new Bullet(
+      'Bullet',
+      'Enemy',
+      new Vector3(transform.position.x + 16, transform.position.y - 50, 0),
+      new Vector3(0, -1, 0),
+    );
   }
 }

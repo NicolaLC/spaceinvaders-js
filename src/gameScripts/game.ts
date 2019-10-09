@@ -26,6 +26,7 @@ export class Game {
     const { gameObjects } = Game;
     Game.sceneContext.clearRect(0, 0, Game.scene.width, Game.scene.height);
     gameObjects.map((go: GameObject) => {
+      go.checkCollision();
       go.render();
     });
     window.requestAnimationFrame(() => {
@@ -37,19 +38,21 @@ export class Game {
     Game.sceneContext = Game.scene.getContext('2d');
     //get DPI
     let dpi = window.devicePixelRatio;
-    //get canvas
-    let canvas = document.getElementById('myCanvas');
     //get context
     //get CSS height
     //the + prefix casts it to an integer
     //the slice method gets rid of "px"
-    let style_height = +getComputedStyle(Game.scene).getPropertyValue("height").slice(0, -2);
+    let style_height = +getComputedStyle(Game.scene)
+      .getPropertyValue('height')
+      .slice(0, -2);
     //get CSS width
-    let style_width = +getComputedStyle(Game.scene).getPropertyValue("width").slice(0, -2);
+    let style_width = +getComputedStyle(Game.scene)
+      .getPropertyValue('width')
+      .slice(0, -2);
     //scale the canvas
     Game.scene.setAttribute('height', '' + style_height * dpi);
     Game.scene.setAttribute('width', '' + style_width * dpi);
-    new Player('SpaceShip')
+    new Player('SpaceShip');
     new Enemies('Invaders');
     this.render();
   }
@@ -74,7 +77,7 @@ export class Game {
 
   static findGameObjectByHtml(htmlElement: Element): GameObject | null {
     const { id } = htmlElement;
-    const result = this.gameObjects.filter(go => !go.destroyed && go.id === id)
+    const result = this.gameObjects.filter(go => !go.destroyed && go.id === id);
     return result && result.length ? result[0] : null;
   }
 }

@@ -1,5 +1,6 @@
 import { Game } from '../../../game';
 import { GameObject } from './game-object';
+import { TextureLoader, SpriteMaterial, Sprite } from 'three';
 /**
  * @description utility class for GameObject factory
  */
@@ -15,6 +16,7 @@ export class GameObjectFactory {
   private id: string;
   private gameObject: GameObject;
   private currentImage = new Image();
+  private sprite: Sprite;
 
   constructor(
     id: string,
@@ -35,31 +37,28 @@ export class GameObjectFactory {
     const { properties, gameObject } = this;
     const { transform } = gameObject;
     if (properties.images) {
-      var spriteImage = new Image();
-      spriteImage.src = properties.images[0];
-      this.currentImage = spriteImage;
-      spriteImage.onload = () => {
-        Game.sceneContext.drawImage(
-          spriteImage,
-          transform.position.x,
-          transform.position.y,
-          transform.scale.x,
-          transform.scale.y,
-        );
-      };
+      var map = (new TextureLoader() as any).load(properties.images[0]);
+      var material = new SpriteMaterial({ map: map, color: 0xffffff });
+      var sprite = new Sprite(material);
+      sprite.scale.set(transform.scale.x, transform.scale.y, transform.scale.z);
+      sprite.position.set(
+        transform.position.x,
+        transform.position.y,
+        transform.position.z,
+      );
+      Game.mainScene.add(sprite);
+      this.sprite = sprite;
     }
   }
 
   render() {
-    const { gameObject, currentImage, properties } = this;
+    const { gameObject, sprite, properties } = this;
     const { transform } = gameObject;
-    if (properties.images) {
-      Game.sceneContext.drawImage(
-        currentImage,
+    if (sprite) {
+      sprite.position.set(
         transform.position.x,
         transform.position.y,
-        transform.scale.x,
-        transform.scale.y,
+        transform.position.z,
       );
     }
   }

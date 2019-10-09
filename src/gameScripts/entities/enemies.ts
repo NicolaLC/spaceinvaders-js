@@ -13,18 +13,26 @@ export class Enemies extends GameObject {
   minMovementX: number = 0;
   enemiesGO: Enemy[] = [];
   constructor(name: string) {
-    super(name, { className: 'Enemies' });
+    super(
+      name,
+      { className: 'Enemies' },
+      {
+        position: new Vector3(0, 0, 0),
+        rotation: new Vector3(0, 0, 0),
+        scale: new Vector3(1, 1, 1),
+      },
+    );
     this.onAwake();
   }
 
   onAwake() {
     this.spawnRandom();
-    this.maxMovementX = Game.scene.width - 64 * 10;
+    this.maxMovementX = window.innerWidth / 1000 - 0.064 * 10;
     super.onAwake();
   }
 
   onStart() {
-    this.move();
+    // this.move();
     setInterval(() => {
       this.shoot();
     }, 1000);
@@ -67,7 +75,7 @@ export class Enemies extends GameObject {
     for (let i = 0; i < Math.floor(Math.random() * 10 + 1); i++) {
       for (let j = 0; j < 15; j++) {
         this.enemiesGO.push(
-          new Enemy(`Enemy${i}${j}`, new Vector3(64 * j, 64 * i, 0)),
+          new Enemy(`Enemy${i}${j}`, new Vector3(0.064 * j, 0.064 * i, 0)),
         );
       }
     }

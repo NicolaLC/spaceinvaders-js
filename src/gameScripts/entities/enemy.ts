@@ -13,7 +13,7 @@ export class Enemy extends GameObject {
       {
         position,
         rotation: new Vector3(0, 0, 0),
-        scale: new Vector3(64, 64, 0),
+        scale: new Vector3(0.064, 0.064, 1),
       },
     );
     super.onAwake();

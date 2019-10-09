@@ -29,9 +29,14 @@
   "author": "Jakub Synowiec <github@jakubsynowiec.info>",
   "license": "Apache-2.0",
   "dependencies": {
+    "@types/three": "^0.103.2",
     "babel-polyfill": "^6.26.0",
     "commonjs": "0.0.1",
+    "express": "^4.17.1",
     "guid-typescript": "^1.0.9",
+    "morgan": "^1.9.1",
+    "reload": "^3.0.2",
+    "three": "^0.109.0",
     "tslib": "~1.10.0"
   }
 }

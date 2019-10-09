@@ -20,13 +20,9 @@ export class Player extends GameObject {
         images: ['assets/images/spaceship.svg'],
       },
       {
-        position: new Vector3(
-          Game.scene.width / 2 - 32,
-          Game.scene.height - 64,
-          0,
-        ),
+        position: new Vector3(0, -0.6, 0),
         rotation: new Vector3(0, 0, 0),
-        scale: new Vector3(64, 64, 0),
+        scale: new Vector3(0.064, 0.064, 1),
       },
     );
     this.onAwake();
@@ -68,7 +64,7 @@ export class Player extends GameObject {
   }
 
   private move(direction: 1 | -1) {
-    const targetMove = 50 * direction;
+    const targetMove = 0.05 * direction;
     // this.transform.position.x += targetMove;
     this.transform.position.x = MathUtils.lerp(
       this.transform.position.x,

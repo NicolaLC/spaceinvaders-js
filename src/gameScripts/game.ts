@@ -1,6 +1,7 @@
 import { Enemies } from './entities/enemies';
 import { Player } from './entities/player';
 import { GameObject } from './core/class/GameObject/game-object';
+import { PerspectiveCamera, WebGLRenderer, Scene } from 'three';
 /**
  * GAME.js
  *
@@ -10,10 +11,19 @@ import { GameObject } from './core/class/GameObject/game-object';
  */
 
 export class Game {
+  // new three js management
+  static camera: any = new PerspectiveCamera(
+    70,
+    window.innerWidth / window.innerHeight,
+    0.01,
+    10,
+  );
+  static mainScene: any;
+  static renderer: any;
   // HTML REFERENCES
   static scene: HTMLCanvasElement = document.querySelector('.GameScene canvas');
   static sceneContext: CanvasRenderingContext2D;
-  static SCENE_WIDTH: number = Game.scene.getBoundingClientRect().width;
+  static SCENE_WIDTH: number = window.innerWidth;
   // GAME OBJECTS
   // @todo define player and enemy class
   static gameObjects: GameObject[] = [];
@@ -24,18 +34,22 @@ export class Game {
 
   render() {
     const { gameObjects } = Game;
-    Game.sceneContext.clearRect(0, 0, Game.scene.width, Game.scene.height);
+    // Game.sceneContext.clearRect(0, 0, Game.scene.width, Game.scene.height);
     gameObjects.map((go: GameObject) => {
       go.checkCollision();
       go.render();
     });
+    Game.renderer.render(Game.mainScene, Game.camera);
     window.requestAnimationFrame(() => {
       this.render();
     });
   }
 
   init() {
-    Game.sceneContext = Game.scene.getContext('2d');
+    this.initScene();
+    new Player('SpaceShip');
+    new Enemies('Invaders');
+    /*Game.sceneContext = Game.scene.getContext('2d');
     //get DPI
     let dpi = window.devicePixelRatio;
     //get context
@@ -52,8 +66,19 @@ export class Game {
     //scale the canvas
     Game.scene.setAttribute('height', '' + style_height * dpi);
     Game.scene.setAttribute('width', '' + style_width * dpi);
-    new Player('SpaceShip');
-    new Enemies('Invaders');
+    // new Player('SpaceShip');
+    // new Enemies('Invaders');
+    this.render();*/
+  }
+
+  initScene() {
+    Game.mainScene = new Scene();
+    Game.camera.position.z = 1;
+    Game.renderer = new WebGLRenderer({
+      antialias: true,
+    });
+    Game.renderer.setSize(window.innerWidth, window.innerHeight);
+    document.querySelector('.GameScene').appendChild(Game.renderer.domElement);
     this.render();
   }
 

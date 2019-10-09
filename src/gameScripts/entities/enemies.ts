@@ -1,8 +1,7 @@
-import { Game } from '../game';
 import { GameObject } from '../core/class/GameObject/game-object';
-import { Vector3 } from '../core/class/vector3';
 import { Enemy } from './enemy';
-import { MathUtils } from '../core/class/math-utils';
+import { Vector3 } from 'three';
+import { Game } from '../game';
 /**
  * PLAYER PROTOTYPE
  */
@@ -10,7 +9,7 @@ export class Enemies extends GameObject {
   moveDirection: number = 1;
   movementSpeed: number = 2000;
   maxMovementX: number = 0;
-  minMovementX: number = 0;
+  minMovementX: number = 64;
   enemiesGO: Enemy[] = [];
   constructor(name: string) {
     super(
@@ -27,16 +26,27 @@ export class Enemies extends GameObject {
 
   onAwake() {
     this.spawnRandom();
-    this.maxMovementX = window.innerWidth / 1000 - 0.064 * 10;
+    this.maxMovementX = 64 * 13;
     super.onAwake();
   }
 
   onStart() {
-    // this.move();
+    setTimeout(() => {
+      this.move();
+    }, this.movementSpeed);
     setInterval(() => {
       this.shoot();
     }, 1000);
   }
+
+  onUpdate() {
+    console.log(this.enemiesGO.length);
+    if (this.enemiesGO.length === 0) {
+      alert('stage cleared');
+      Game.restart();
+    }
+  }
+
   move() {
     let { maxMovementX, minMovementX } = this;
     /// we need to move the plaeyr into a specific direction
@@ -53,9 +63,9 @@ export class Enemies extends GameObject {
     ) {
       this.moveDirection *= -1;
       setTimeout(() => {
-        this.transform.position.y += 64;
+        this.transform.position.y -= 64;
         this.enemiesGO.map(ego => {
-          ego.transform.position.y += 64;
+          ego.transform.position.y -= 64;
         });
         this.movementSpeed -= this.movementSpeed / 8;
         this.movementSpeed = Math.max(500, this.movementSpeed);
@@ -68,14 +78,33 @@ export class Enemies extends GameObject {
   }
 
   shoot() {
-    return;
+    const randomEnemy = this.enemiesGO[
+      Math.floor(Math.random() * this.enemiesGO.length - 1) + 1
+    ];
+    if (!randomEnemy) {
+      return;
+    }
+    randomEnemy.shoot();
+  }
+
+  onChildrenDestroy(children: Enemy) {
+    const indexOf = this.enemiesGO.indexOf(children);
+    if (indexOf > -1) {
+      this.enemiesGO.splice(indexOf, 1);
+    }
   }
 
   spawnRandom() {
+    const width = window.innerWidth;
+    const height = window.innerHeight;
     for (let i = 0; i < Math.floor(Math.random() * 10 + 1); i++) {
       for (let j = 0; j < 15; j++) {
         this.enemiesGO.push(
-          new Enemy(`Enemy${i}${j}`, new Vector3(0.064 * j, 0.064 * i, 0)),
+          new Enemy(
+            `Enemy${i}${j}`,
+            new Vector3(-width / 2 + 64 * j + 64, height / 2 - 64 * i - 64, 0),
+            this,
+          ),
         );
       }
     }

@@ -1,6 +1,6 @@
 import { Game } from '../../../game';
 import { GameObject } from './game-object';
-import { TextureLoader, SpriteMaterial, Sprite } from 'three';
+import { TextureLoader, SpriteMaterial, Sprite, Texture } from 'three';
 /**
  * @description utility class for GameObject factory
  */
@@ -29,6 +29,7 @@ export class GameObjectFactory {
   }
 
   destroy() {
+    Game.mainScene.remove(this.sprite);
     Game.unregisterGameObject(this.gameObject);
     delete this.gameObject;
   }
@@ -37,22 +38,27 @@ export class GameObjectFactory {
     const { properties, gameObject } = this;
     const { transform } = gameObject;
     if (properties.images) {
-      var map = (new TextureLoader() as any).load(properties.images[0]);
-      var material = new SpriteMaterial({ map: map, color: 0xffffff });
-      var sprite = new Sprite(material);
-      sprite.scale.set(transform.scale.x, transform.scale.y, transform.scale.z);
-      sprite.position.set(
-        transform.position.x,
-        transform.position.y,
-        transform.position.z,
-      );
-      Game.mainScene.add(sprite);
-      this.sprite = sprite;
+      Game.textureLoader.load(properties.images[0], (texture: Texture) => {
+        var material = new SpriteMaterial({ map: texture });
+        let sprite = new Sprite(material);
+        sprite.scale.set(
+          transform.scale.x,
+          transform.scale.y,
+          transform.scale.z,
+        );
+        sprite.position.set(
+          transform.position.x,
+          transform.position.y,
+          transform.position.z,
+        );
+        Game.mainScene.add(sprite);
+        this.sprite = sprite;
+      });
     }
   }
 
   render() {
-    const { gameObject, sprite, properties } = this;
+    const { gameObject, sprite } = this;
     const { transform } = gameObject;
     if (sprite) {
       sprite.position.set(

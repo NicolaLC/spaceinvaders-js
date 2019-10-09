@@ -1,7 +1,13 @@
 import { Enemies } from './entities/enemies';
 import { Player } from './entities/player';
 import { GameObject } from './core/class/GameObject/game-object';
-import { PerspectiveCamera, WebGLRenderer, Scene } from 'three';
+import {
+  WebGLRenderer,
+  Scene,
+  OrthographicCamera,
+  Texture,
+  TextureLoader,
+} from 'three';
 /**
  * GAME.js
  *
@@ -12,14 +18,10 @@ import { PerspectiveCamera, WebGLRenderer, Scene } from 'three';
 
 export class Game {
   // new three js management
-  static camera: any = new PerspectiveCamera(
-    70,
-    window.innerWidth / window.innerHeight,
-    0.01,
-    10,
-  );
+  static camera: OrthographicCamera;
   static mainScene: any;
   static renderer: any;
+  static textureLoader: TextureLoader = new TextureLoader();
   // HTML REFERENCES
   static scene: HTMLCanvasElement = document.querySelector('.GameScene canvas');
   static sceneContext: CanvasRenderingContext2D;
@@ -35,6 +37,9 @@ export class Game {
   render() {
     const { gameObjects } = Game;
     // Game.sceneContext.clearRect(0, 0, Game.scene.width, Game.scene.height);
+    Game.renderer.clear();
+    Game.renderer.clearDepth();
+    Game.renderer.render(Game.mainScene, Game.camera);
     gameObjects.map((go: GameObject) => {
       go.checkCollision();
       go.render();
@@ -49,35 +54,29 @@ export class Game {
     this.initScene();
     new Player('SpaceShip');
     new Enemies('Invaders');
-    /*Game.sceneContext = Game.scene.getContext('2d');
-    //get DPI
-    let dpi = window.devicePixelRatio;
-    //get context
-    //get CSS height
-    //the + prefix casts it to an integer
-    //the slice method gets rid of "px"
-    let style_height = +getComputedStyle(Game.scene)
-      .getPropertyValue('height')
-      .slice(0, -2);
-    //get CSS width
-    let style_width = +getComputedStyle(Game.scene)
-      .getPropertyValue('width')
-      .slice(0, -2);
-    //scale the canvas
-    Game.scene.setAttribute('height', '' + style_height * dpi);
-    Game.scene.setAttribute('width', '' + style_width * dpi);
-    // new Player('SpaceShip');
-    // new Enemies('Invaders');
-    this.render();*/
   }
 
   initScene() {
     Game.mainScene = new Scene();
-    Game.camera.position.z = 1;
+    var width = window.innerWidth;
+    var height = window.innerHeight;
+    Game.camera = new OrthographicCamera(
+      -width / 2,
+      width / 2,
+      height / 2,
+      -height / 2,
+      1,
+      10,
+    );
+    Game.camera.position.z = 10;
     Game.renderer = new WebGLRenderer({
       antialias: true,
+      alpha: true,
     });
-    Game.renderer.setSize(window.innerWidth, window.innerHeight);
+    Game.renderer.setPixelRatio(window.devicePixelRatio);
+    Game.renderer.setSize(width, height);
+    Game.renderer.autoClear = true;
+    Game.renderer.setClearColor(0x000000, 0); // the default
     document.querySelector('.GameScene').appendChild(Game.renderer.domElement);
     this.render();
   }

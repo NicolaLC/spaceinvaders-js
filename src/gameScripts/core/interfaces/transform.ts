@@ -1,4 +1,4 @@
-import { Vector3 } from '../class/vector3';
+import { Vector3 } from 'three';
 
 export interface Transform {
   position: Vector3;

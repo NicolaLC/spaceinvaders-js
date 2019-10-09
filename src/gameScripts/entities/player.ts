@@ -1,9 +1,10 @@
 import { Game } from '../game';
 import { GameObject } from '../core/class/GameObject/game-object';
 import { KEYS, InputManager } from '../core/class/keyboard-events';
-import { Vector3 } from '../core/class/vector3';
 import { Bullet } from './bullet';
 import { MathUtils } from '../core/class/math-utils';
+import { Vector3 } from 'three';
+import { EnemyBullet } from './enemyBullet';
 /**
  * PLAYER PROTOTYPE
  */
@@ -20,9 +21,9 @@ export class Player extends GameObject {
         images: ['assets/images/spaceship.svg'],
       },
       {
-        position: new Vector3(0, -0.6, 0),
+        position: new Vector3(0, -window.screen.height / 2 + 128, 0),
         rotation: new Vector3(0, 0, 0),
-        scale: new Vector3(0.064, 0.064, 1),
+        scale: new Vector3(64, 64, 1),
       },
     );
     this.onAwake();
@@ -38,7 +39,7 @@ export class Player extends GameObject {
       if (!this.shootInterval) {
         this.shootInterval = setInterval(() => {
           this.shoot();
-        }, 500);
+        }, 100);
         this.shoot();
       }
     } else {
@@ -50,7 +51,7 @@ export class Player extends GameObject {
   }
 
   onCollisionEnter(go: GameObject) {
-    if (go instanceof Bullet) {
+    if (go.name === 'EnemyBullet') {
       Game.restart();
     }
   }
@@ -64,8 +65,8 @@ export class Player extends GameObject {
   }
 
   private move(direction: 1 | -1) {
-    const targetMove = 0.05 * direction;
-    // this.transform.position.x += targetMove;
+    const targetMove = 10 * direction;
+    this.transform.position.x += targetMove;
     this.transform.position.x = MathUtils.lerp(
       this.transform.position.x,
       this.transform.position.x + targetMove,
@@ -77,10 +78,9 @@ export class Player extends GameObject {
     const { transform } = this;
     // instantiate new bullet
     new Bullet(
-      'Bullet',
-      'Enemy',
-      new Vector3(transform.position.x + 16, transform.position.y - 50, 0),
-      new Vector3(0, -1, 0),
+      'PlayerBullet',
+      new Vector3(transform.position.x + 2, transform.position.y + 60, 0),
+      new Vector3(0, 1, 0),
     );
   }
 }

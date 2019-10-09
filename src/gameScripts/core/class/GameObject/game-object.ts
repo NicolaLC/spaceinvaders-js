@@ -1,13 +1,13 @@
 import { Transform } from '../../interfaces/transform';
 import { Script } from 'vm';
 import { Utils } from '../utils';
-import { Vector3 } from '../vector3';
 import { MathUtils } from '../math-utils';
 import {
   GameObjectFactory,
   GameObjectFactoryProperties,
 } from './game-object.factory';
 import { Game } from '../../../game';
+import { Vector3 } from 'three';
 /**
  * GameObject
  *
@@ -34,14 +34,13 @@ export class GameObject {
     this.transform = transform || {
       position: new Vector3(0, 0, 0),
       rotation: new Vector3(0, 0, 0),
-      scale: new Vector3(1, 1, 1),
+      scale: new Vector3(1, 1, 0),
     };
     this.name = name;
     this.factory = new GameObjectFactory(this.id, settings, this);
     this.factory.create();
     this.htmlElement = this.factory.htmlRef;
     Game.registerGameObject(this);
-    Utils.log(`[${name}] >>> spawned`);
   }
 
   customGameObjectContent?(): string {
@@ -66,18 +65,13 @@ export class GameObject {
     });
   }
 
-  onAwake() {
-    Utils.log(`[${this.name}] >>> onAwake`);
-  }
+  onAwake() {}
 
-  onStart?() {
-    Utils.log(`[${this.name}] >>> onStart`);
-  }
+  onStart?() {}
 
   onUpdate?() {}
   onCollisionEnter?(collider?: GameObject) {}
   onDestroy?() {
-    Utils.log(`[${this.name}] >>> onDestroy`);
     this.factory.destroy();
     window.cancelAnimationFrame(this.lastAnimationFrame);
     this.destroyed = true;

@@ -10,5 +10,5 @@ document.getElementById('play').addEventListener('click', () => {
   document.body.classList.add('InGame');
   setTimeout(() => {
     new Game();
-  }, 5000);
+  }, 3000);
 });

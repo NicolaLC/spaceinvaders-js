@@ -4,7 +4,7 @@ import { KEYS, InputManager } from '../core/class/keyboard-events';
 import { Bullet } from './bullet';
 import { MathUtils } from '../core/class/math-utils';
 import { Vector3 } from 'three';
-import { EnemyBullet } from './enemyBullet';
+
 /**
  * PLAYER PROTOTYPE
  */
@@ -18,7 +18,7 @@ export class Player extends GameObject {
       name,
       {
         className: 'Player',
-        images: ['assets/images/spaceship.svg'],
+        images: ['assets/images/SpaceShip.svg'],
       },
       {
         position: new Vector3(0, -window.screen.height / 2 + 128, 0),
@@ -79,7 +79,7 @@ export class Player extends GameObject {
     // instantiate new bullet
     new Bullet(
       'PlayerBullet',
-      new Vector3(transform.position.x + 2, transform.position.y + 60, 0),
+      new Vector3(transform.position.x, transform.position.y + 60, 0),
       new Vector3(0, 1, 0),
     );
   }

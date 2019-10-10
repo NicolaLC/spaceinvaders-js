@@ -40,9 +40,7 @@ export class Enemies extends GameObject {
   }
 
   onUpdate() {
-    console.log(this.enemiesGO.length);
     if (this.enemiesGO.length === 0) {
-      alert('stage cleared');
       Game.restart();
     }
   }

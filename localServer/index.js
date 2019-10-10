@@ -21,9 +21,8 @@ reload(app).then(function (reloadReturned) {
 
   // Reload started, start web server
   server.listen(app.get('port'), function () {
-    console.log('Web server listening on port ' + app.get('port'))
+    console.log('app ready @ http://localhost:' + app.get('port'))
   })
 }).catch(function (err) {
   console.error('Reload could not start, could not start server/sample app', err)
 })
-console.log('app ready @ http://localhost:8080');

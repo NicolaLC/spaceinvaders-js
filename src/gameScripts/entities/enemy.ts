@@ -3,6 +3,7 @@ import { Bullet } from './bullet';
 import { Vector3 } from 'three';
 import { EnemyBullet } from './enemyBullet';
 import { Enemies } from './enemies';
+import { Explosion } from './explosion';
 /**
  * PLAYER PROTOTYPE
  */
@@ -11,7 +12,7 @@ export class Enemy extends GameObject {
   constructor(name: string, position: Vector3, parent: Enemies) {
     super(
       name,
-      { className: 'Enemy', images: ['assets/images/enemy01.svg'] },
+      { className: 'Enemy', images: ['assets/images/Enemy01.png'] },
       {
         position,
         rotation: new Vector3(0, 0, 0),
@@ -27,6 +28,7 @@ export class Enemy extends GameObject {
       this.destroyed = true;
       this.factory.destroy();
       this.parent.onChildrenDestroy(this);
+      new Explosion(this.transform);
       go.onDestroy();
     }
   }
@@ -38,7 +40,7 @@ export class Enemy extends GameObject {
       'EnemyBullet',
       new Vector3(transform.position.x + 2, transform.position.y - 60, 0),
       new Vector3(0, -1, 0),
-      1,
+      10,
     );
   }
 }

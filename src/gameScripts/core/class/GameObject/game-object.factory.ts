@@ -66,6 +66,12 @@ export class GameObjectFactory {
         transform.position.y,
         transform.position.z,
       );
+      sprite.rotation.set(
+        transform.rotation.x,
+        transform.rotation.y,
+        transform.rotation.z,
+      );
+      sprite.scale.set(transform.scale.x, transform.scale.y, transform.scale.z);
     }
   }
 }

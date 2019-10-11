@@ -15,7 +15,6 @@ export class GameObjectFactory {
 
   private id: string;
   private gameObject: GameObject;
-  private currentImage = new Image();
   private sprite: Sprite;
 
   constructor(

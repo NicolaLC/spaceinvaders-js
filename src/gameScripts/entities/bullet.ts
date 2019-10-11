@@ -33,7 +33,7 @@ export class Bullet extends GameObject {
     this.onAwake();
     this.destroyTimeout = setTimeout(() => {
       this.onDestroy();
-    }, 2000);
+    }, 3000);
   }
 
   onUpdate() {

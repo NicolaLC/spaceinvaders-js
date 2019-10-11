@@ -1,5 +1,4 @@
 import { GameObject } from '../core/class/GameObject/game-object';
-import { Bullet } from './bullet';
 import { Vector3 } from 'three';
 import { EnemyBullet } from './enemyBullet';
 import { Enemies } from './enemies';
@@ -40,7 +39,7 @@ export class Enemy extends GameObject {
       'EnemyBullet',
       new Vector3(transform.position.x + 2, transform.position.y - 60, 0),
       new Vector3(0, -1, 0),
-      10,
+      5,
     );
   }
 }

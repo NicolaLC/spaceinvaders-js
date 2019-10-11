@@ -1,13 +1,8 @@
 import { Enemies } from './entities/enemies';
 import { Player } from './entities/player';
 import { GameObject } from './core/class/GameObject/game-object';
-import {
-  WebGLRenderer,
-  Scene,
-  OrthographicCamera,
-  Texture,
-  TextureLoader,
-} from 'three';
+import { WebGLRenderer, Scene, OrthographicCamera, TextureLoader } from 'three';
+import { MathUtils } from './core/class/math-utils';
 /**
  * GAME.js
  *
@@ -29,6 +24,7 @@ export class Game {
   // GAME OBJECTS
   // @todo define player and enemy class
   static gameObjects: GameObject[] = [];
+  static cameraIsShaking = false;
 
   constructor() {
     this.init();
@@ -78,6 +74,16 @@ export class Game {
     Game.renderer.autoClear = true;
     Game.renderer.setClearColor(0x000000, 0); // the default
     document.querySelector('.GameScene').appendChild(Game.renderer.domElement);
+
+    window.addEventListener('resize', () => {
+      var width = window.innerWidth;
+      var height = window.innerHeight;
+      Game.renderer.setSize(width, height);
+      Game.camera.left = -width / 2;
+      Game.camera.right = width / 2;
+      Game.camera.top = -height / 2;
+      Game.camera.bottom = height / 2;
+    });
     this.render();
   }
 
@@ -103,5 +109,37 @@ export class Game {
     const { id } = htmlElement;
     const result = this.gameObjects.filter(go => !go.destroyed && go.id === id);
     return result && result.length ? result[0] : null;
+  }
+
+  static shakeCamera() {
+    if (Game.cameraIsShaking) {
+      return;
+    }
+    const { position } = Game.camera;
+    const originalPosition = Object.assign({}, position);
+    Game.cameraIsShaking = true;
+    for (let i = 0; i < 6; i++) {
+      setTimeout(() => {
+        if (i === 5) {
+          Game.camera.position.set(
+            originalPosition.x,
+            originalPosition.y,
+            originalPosition.z,
+          );
+          Game.cameraIsShaking = false;
+        } else {
+          position.y = MathUtils.lerp(
+            position.y,
+            position.y + 100 * (i % 2 === 0 ? 1 : -1),
+            0.1,
+          );
+          position.x = MathUtils.lerp(
+            position.y,
+            position.y + 100 * (i % 2 === 0 ? -1 : 1),
+            0.1,
+          );
+        }
+      }, 50 * i);
+    }
   }
 }

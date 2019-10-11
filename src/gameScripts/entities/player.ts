@@ -21,7 +21,7 @@ export class Player extends GameObject {
         images: ['assets/images/SpaceShip.svg'],
       },
       {
-        position: new Vector3(0, -window.screen.height / 2 + 128, 0),
+        position: new Vector3(0, -document.body.clientHeight / 2 + 50, 0),
         rotation: new Vector3(0, 0, 0),
         scale: new Vector3(64, 64, 1),
       },
@@ -39,7 +39,7 @@ export class Player extends GameObject {
       if (!this.shootInterval) {
         this.shootInterval = setInterval(() => {
           this.shoot();
-        }, 100);
+        }, 1000);
         this.shoot();
       }
     } else {
@@ -52,15 +52,17 @@ export class Player extends GameObject {
 
   onCollisionEnter(go: GameObject) {
     if (go.name === 'EnemyBullet') {
-      Game.restart();
+      // Game.restart();
+      Game.shakeCamera();
+      go.onDestroy();
     }
   }
 
   public damage() {
     this.currentLife--;
     if (this.currentLife <= 0) {
-      Game.restart();
       super.onDestroy();
+      Game.restart();
     }
   }
 

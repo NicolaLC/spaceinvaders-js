@@ -66,9 +66,7 @@ export class GameObject {
   }
 
   onAwake() {}
-
   onStart?() {}
-
   onUpdate?() {}
   onCollisionEnter?(collider?: GameObject) {}
   onDestroy?() {

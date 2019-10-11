@@ -3,6 +3,7 @@ import { Vector3 } from 'three';
 import { EnemyBullet } from './enemyBullet';
 import { Enemies } from './enemies';
 import { Explosion } from './explosion';
+import { Game } from '../game';
 /**
  * PLAYER PROTOTYPE
  */
@@ -28,6 +29,7 @@ export class Enemy extends GameObject {
       this.factory.destroy();
       this.parent.onChildrenDestroy(this);
       new Explosion(this.transform);
+      Game.addToScore(100);
       go.onDestroy();
     }
   }

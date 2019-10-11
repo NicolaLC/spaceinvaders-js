@@ -3,6 +3,7 @@ import { Player } from './entities/player';
 import { GameObject } from './core/class/GameObject/game-object';
 import { WebGLRenderer, Scene, OrthographicCamera, TextureLoader } from 'three';
 import { MathUtils } from './core/class/math-utils';
+import { UI } from './ui';
 /**
  * GAME.js
  *
@@ -25,6 +26,8 @@ export class Game {
   // @todo define player and enemy class
   static gameObjects: GameObject[] = [];
   static cameraIsShaking = false;
+
+  static score: number = 0;
 
   constructor() {
     this.init();
@@ -141,5 +144,10 @@ export class Game {
         }
       }, 50 * i);
     }
+  }
+
+  static addToScore(what: number) {
+    Game.score += what;
+    UI.setScoreUI(`SCORE: ${Game.score}`);
   }
 }

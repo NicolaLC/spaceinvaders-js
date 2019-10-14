@@ -2,43 +2,61 @@
 
 <html lang="en">
 
-<head>
-  <meta charset="utf-8">
+  <head>
+    <meta charset="utf-8">
 
-  <title>Space Invaders in JavaScript!</title>
-  <meta name="description" content="Space Invaders with Javascript!">
-  <meta name="author" content="Nicola Castellani">
+    <title>Space Invaders in JavaScript!</title>
+    <meta name="description" content="Space Invaders with Javascript!">
+    <meta name="author" content="Nicola Castellani">
 
-  <link rel="stylesheet" href="gameStyles/game.css">
-</head>
+    <link rel="stylesheet" href="gameStyles/game.css">
+  </head>
 
-<body>
-  <div id="GameWrapper">
-    <div class="HomeMenu">
-      <div class="Title">
-        Space Invaders
+  <body>
+    <div id="GameWrapper">
+      <div class="HomeMenu">
+        <div class="Title">
+          Space Invaders
+        </div>
+        <div class="Menu">
+          <p id="play">PLAY</p>
+          <p>CREDITS</p>
+        </div>
       </div>
-      <div class="Menu">
-        <p id="play">PLAY</p>
-        <p>CREDITS</p>
+      <div class="UI">
+        <div class="Top"></div>
+        <div class="Bottom">
+          <div class="BottomLeftUI">
+            <div class="Label">LEVEL</div>
+            <div id="levelLabel" class="LabelValue">TEST</div>
+            <div class="Label">SCORE</div>
+            <div id="scoreLabel" class="LabelValue">0</div>
+          </div>
+          <div class="BottomRightUI">
+            <div class="Label">SHIELDS</div>
+            <div id="Shield" class="ProgressBar Reverse">
+              <div class="Bar" style="width: 75%"></div>
+              <b>[75%]</b>
+            </div>
+            <div class="Label">LIFE</div>
+            <div id="Life" class="ProgressBar Reverse">
+              <div class="Bar Red" style="width: 75%"></div>
+              <b>[75%]</b>
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
-    <div class="UI">
-      <div class="Top">
-        <div id="Score">SCORE: 0</div>
-      </div>
-    </div>
-    <div class="GameScene">
-      <div class="Earth">
-        <div class="EarthOrbit">
-          <div class="Moon"></div>
+      <div class="GameScene">
+        <div class="Earth">
+          <div class="EarthOrbit">
+            <div class="Moon"></div>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-  <script src="https://cdn.jsdelivr.net/npm/gl-matrix@3.0.0/gl-matrix-min.js"></script>
-  <script src="bundle.js"></script>
-  <script src="/reload/reload.js"></script>
-</body>
+    <script src="https://cdn.jsdelivr.net/npm/gl-matrix@3.0.0/gl-matrix-min.js"></script>
+    <script src="bundle.js"></script>
+    <script src="/reload/reload.js"></script>
+  </body>
 
 </html>

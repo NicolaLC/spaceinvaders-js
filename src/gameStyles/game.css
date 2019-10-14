@@ -1,6 +1,5 @@
 /* CORE GAME STYLE */
-
-@import url('https://fonts.googleapis.com/css?family=Press+Start+2P&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Share+Tech+Mono&display=swap');
 @font-face {
   font-family: 'DURA3D';
   src: url('/assets/fonts/DURA3D.ttf'); /* IE9 Compat Modes */
@@ -92,7 +91,89 @@ h1 b {
   position: fixed;
   top: 0;
   left: 0;
-  padding: 2rem;
+  font-family: 'Share Tech Mono', monospace;
+}
+
+.UI .Bottom {
+  transition: opacity .25s ease-out;
+}
+
+.UI .ProgressBar {
+  width: 200px;
+  height: 20px;
+  background-color: white;
+  border-radius: 15px;
+  color: #071627;
+  font-weight: bold;
+  position: relative;
+  overflow: hidden;
+}
+
+.UI .ProgressBar b {
+  z-index: 1001;
+  position: absolute;
+  top: 3px;
+  left: 5px;
+  font-size: .75rem;
+}
+
+.ProgressBar .Bar {
+  position: absolute;
+  top:0;
+  left: 0;
+  height: 200%;
+  background-color: #54a0ff;
+  border-radius: 0;
+  color: #071627;
+  font-weight: bold;
+  z-index: 0;
+}
+
+.ProgressBar .Bar.Red {
+  background-color: #ee5253;
+}
+
+.ProgressBar.Reverse b {
+  right: 5px;
+  left: auto;
+}
+
+.ProgressBar.Reverse .Bar {
+  right: 0;
+  left: auto;
+}
+
+.UI .BottomLeftUI {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  background: url('../assets/images/ui_bottom.svg');
+  background-repeat: no-repeat;
+  background-size: contain;
+  width: calc(484px - 1rem);
+  height: calc(167.2px - 3rem);
+  display: flex;
+  place-content: flex-start;
+  place-items: flex-start;
+  flex-direction: column;
+  padding-top: 3rem;
+  padding-left: 1rem;
+}
+.UI .BottomRightUI {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  background: url('../assets/images/ui_bottom_right.svg');
+  background-repeat: no-repeat;
+  background-size: contain;
+  width: calc(484px - 1rem);
+  height: calc(167.2px - 3rem);
+  display: flex;
+  place-content: flex-start;
+  place-items: flex-end;
+  flex-direction: column;
+  padding-top: 3rem;
+  padding-right: 1rem;
 }
 
 .UI .Top {
@@ -103,12 +184,29 @@ h1 b {
   width: 100%;
 }
 
-.UI .Top #Score {
-  font-family: 'DURA3D', sans-serif;
-  color: #54a0ff;
-  font-size: 2rem;
-  opacity: 0.5;
+
+.UI .Bottom {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
 }
+
+.UI .LabelValue {
+  color: #54a0ff;
+  font-size: 1.5rem;
+}
+
+.UI .Label {
+  color: #54a0ff;
+  font-size: 1rem;
+  opacity: .75;
+}
+
+* + .Label {
+  margin-top: .5rem;
+}
+
 
 .InGame .UI {
   display: flex;

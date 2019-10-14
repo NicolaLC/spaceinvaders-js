@@ -50,6 +50,12 @@ export class GameObjectFactory {
           transform.position.y,
           transform.position.z,
         );
+
+        sprite.rotation.set(
+          transform.rotation.x,
+          transform.rotation.y,
+          transform.rotation.z,
+        );
         Game.mainScene.add(sprite);
         this.sprite = sprite;
       });

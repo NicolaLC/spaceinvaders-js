@@ -59,6 +59,7 @@ export class Game {
     Game.mainScene = new Scene();
     var width = window.innerWidth;
     var height = window.innerHeight;
+    Game.SCENE_WIDTH = width;
     Game.camera = new OrthographicCamera(
       -width / 2,
       width / 2,
@@ -86,6 +87,7 @@ export class Game {
       Game.camera.right = width / 2;
       Game.camera.top = -height / 2;
       Game.camera.bottom = height / 2;
+      Game.SCENE_WIDTH = width;
     });
     this.render();
   }
@@ -148,6 +150,6 @@ export class Game {
 
   static addToScore(what: number) {
     Game.score += what;
-    UI.setScoreUI(`SCORE: ${Game.score}`);
+    UI.setScoreUI(`${Game.score}`);
   }
 }

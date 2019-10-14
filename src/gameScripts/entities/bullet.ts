@@ -24,7 +24,7 @@ export class Bullet extends GameObject {
       },
       {
         position,
-        rotation: new Vector3(0, 0, 0),
+        rotation: new Vector3(0, direction.x !== 0 ? (direction.x === -1 ? -45 : 45) : 0, 0),
         scale: new Vector3(8, 32, 1),
       },
     );
@@ -38,6 +38,7 @@ export class Bullet extends GameObject {
 
   onUpdate() {
     this.transform.position.y += this.bulletSpeed * this.direction.y;
+    this.transform.position.x += this.bulletSpeed * this.direction.x;
   }
 
   onDestroy() {

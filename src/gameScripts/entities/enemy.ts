@@ -1,6 +1,6 @@
 import { GameObject } from '../core/class/GameObject/game-object';
 import { Vector3 } from 'three';
-import { EnemyBullet } from './enemyBullet';
+import { EnemyBullet } from './enemy-bullet';
 import { Enemies } from './enemies';
 import { Explosion } from './explosion';
 import { Game } from '../game';

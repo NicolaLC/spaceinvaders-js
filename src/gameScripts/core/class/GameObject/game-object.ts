@@ -51,9 +51,9 @@ export class GameObject {
     if (!this.onCollisionEnter) {
       return;
     }
-    const { id } = this;
+    const { name } = this;
     Game.gameObjects.map(go => {
-      if (go.id !== id) {
+      if (go.name !== name) {
         const collides = MathUtils.checkColisionBetween(
           go.transform,
           this.transform,

@@ -38,7 +38,10 @@ export class GameObjectFactory {
     const { transform } = gameObject;
     if (properties.images) {
       Game.textureLoader.load(properties.images[0], (texture: Texture) => {
-        var material = new SpriteMaterial({ map: texture });
+        var material = new SpriteMaterial({
+          map: texture,
+          rotation: transform.rotation.z,
+        });
         let sprite = new Sprite(material);
         sprite.scale.set(
           transform.scale.x,

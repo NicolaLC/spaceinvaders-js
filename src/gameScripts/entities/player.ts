@@ -47,7 +47,7 @@ export class Player extends GameObject {
       if (!this.shootInterval) {
         this.shootInterval = setInterval(() => {
           this.shoot();
-        }, 1000);
+        }, 500);
         this.shoot();
       }
     } else {
@@ -79,6 +79,7 @@ export class Player extends GameObject {
     clearInterval(this.shieldRestoreTimeout);
     this.shieldRestoreTimeout = setTimeout(() => {
       this.shield = 100;
+      UI.updateShieldAmount(`${this.shield}%`);
     }, 5000);
     UI.updateShieldAmount(`${this.shield}%`);
     UI.updateLifeAmount(`${this.life}%`);
@@ -93,8 +94,9 @@ export class Player extends GameObject {
       0.1,
     );
     if (
-      this.transform.position.x <= -Game.SCENE_WIDTH / 6
-      || this.transform.position.x >= Game.SCENE_WIDTH / 6) {
+      this.transform.position.x <= -Game.SCENE_WIDTH / 6 ||
+      this.transform.position.x >= Game.SCENE_WIDTH / 6
+    ) {
       UI.setBottomUIOpacity('.1');
     } else {
       UI.setBottomUIOpacity('1');
@@ -108,6 +110,8 @@ export class Player extends GameObject {
       'PlayerBullet',
       new Vector3(transform.position.x, transform.position.y + 60, 0),
       new Vector3(0, 1, 0),
+      10,
+      1500,
     );
   }
 }

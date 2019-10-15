@@ -8,12 +8,14 @@ export class Bullet extends GameObject {
   // the class name of collision target object
   direction: Vector3;
   bulletSpeed: number;
+  lifeTime: number = 2000;
   destroyTimeout: any;
   constructor(
     name: string,
     position: Vector3,
     direction: Vector3,
     bulletSpeed: number = 25,
+    lifeTime: number = 2000,
   ) {
     super(
       name,
@@ -24,7 +26,7 @@ export class Bullet extends GameObject {
       },
       {
         position,
-        rotation: new Vector3(0, direction.x !== 0 ? (direction.x === -1 ? -45 : 45) : 0, 0),
+        rotation: new Vector3(0, 0, direction.x !== 0 ? Math.PI / 2 : 0),
         scale: new Vector3(8, 32, 1),
       },
     );
@@ -33,7 +35,7 @@ export class Bullet extends GameObject {
     this.onAwake();
     this.destroyTimeout = setTimeout(() => {
       this.onDestroy();
-    }, 3000);
+    }, lifeTime);
   }
 
   onUpdate() {

@@ -37,9 +37,11 @@ export class Game {
     const { gameObjects } = Game;
     // Game.sceneContext.clearRect(0, 0, Game.scene.width, Game.scene.height);
     Game.renderer.clear();
-    Game.renderer.clearDepth();
     Game.renderer.render(Game.mainScene, Game.camera);
     gameObjects.map((go: GameObject) => {
+      if (go.destroyed) {
+        return;
+      }
       go.checkCollision();
       go.render();
     });
@@ -75,7 +77,7 @@ export class Game {
     });
     Game.renderer.setPixelRatio(window.devicePixelRatio);
     Game.renderer.setSize(width, height);
-    Game.renderer.autoClear = true;
+    Game.renderer.autoClear = false;
     Game.renderer.setClearColor(0x000000, 0); // the default
     document.querySelector('.GameScene').appendChild(Game.renderer.domElement);
 
@@ -97,8 +99,8 @@ export class Game {
   }
 
   static unregisterGameObject(go: GameObject) {
-    const indexOf = this.gameObjects.indexOf(go);
-    this.gameObjects.splice(indexOf, 1);
+    const indexOf = Game.gameObjects.indexOf(go);
+    Game.gameObjects.splice(indexOf, 1);
   }
 
   static restart() {

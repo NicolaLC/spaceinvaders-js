@@ -37,11 +37,13 @@ export class Enemy extends GameObject {
   shoot() {
     const { transform } = this;
     // instantiate new bullet
+    return;
     new EnemyBullet(
       'EnemyBullet',
       new Vector3(transform.position.x + 2, transform.position.y - 60, 0),
       new Vector3(0, -1, 0),
-      5,
+      10,
+      3000,
     );
   }
 }

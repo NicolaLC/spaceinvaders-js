@@ -5,6 +5,7 @@ import { MathUtils } from '../core/class/math-utils';
 import { Vector3 } from 'three';
 import { UI } from '../ui';
 import { Bullet } from './bullet';
+import { CrossBullet } from './cross-bullet';
 
 /**
  * PLAYER PROTOTYPE
@@ -46,7 +47,7 @@ export class Player extends GameObject {
       if (!this.shootInterval) {
         this.shootInterval = setInterval(() => {
           this.shoot();
-        }, 5);
+        }, 500);
         this.shoot();
       }
     } else {
@@ -105,11 +106,11 @@ export class Player extends GameObject {
   private shoot() {
     const { transform } = this;
     // instantiate new bullet
-    new Bullet(
+    new CrossBullet(
       'PlayerBullet',
       new Vector3(transform.position.x, transform.position.y + 60, 0),
       new Vector3(0, 1, 0),
-      10,
+      15,
       1500,
     );
   }

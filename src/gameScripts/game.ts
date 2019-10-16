@@ -37,9 +37,10 @@ export class Game {
     const { gameObjects } = Game;
     // Game.sceneContext.clearRect(0, 0, Game.scene.width, Game.scene.height);
     Game.renderer.clear();
-    Game.renderer.render(Game.mainScene, Game.camera);
+    Game.renderer.renderLists.dispose();
     gameObjects.map((go: GameObject) => {
       if (go.destroyed) {
+        go.onDestroy();
         return;
       }
       go.checkCollision();

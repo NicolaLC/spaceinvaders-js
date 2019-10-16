@@ -70,9 +70,9 @@ export class GameObject {
   onUpdate?() {}
   onCollisionEnter?(collider?: GameObject) {}
   onDestroy?() {
+    this.destroyed = true;
     this.factory.destroy();
     window.cancelAnimationFrame(this.lastAnimationFrame);
-    this.destroyed = true;
   }
 
   render?() {

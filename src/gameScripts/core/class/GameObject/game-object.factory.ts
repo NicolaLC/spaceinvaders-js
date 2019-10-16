@@ -28,9 +28,15 @@ export class GameObjectFactory {
   }
 
   destroy() {
+    if (!this.sprite) {
+      return;
+    }
+    this.sprite.material.dispose();
+    this.sprite.geometry.dispose();
     Game.mainScene.remove(this.sprite);
+    this.sprite.remove();
     Game.unregisterGameObject(this.gameObject);
-    delete this.gameObject;
+    this.sprite = null;
   }
 
   create() {
@@ -66,6 +72,7 @@ export class GameObjectFactory {
   }
 
   render() {
+    if (this.gameObject.destroyed) return;
     const { gameObject, sprite } = this;
     const { transform } = gameObject;
     if (sprite) {

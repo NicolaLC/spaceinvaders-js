@@ -25,12 +25,12 @@ export class Enemy extends GameObject {
 
   onCollisionEnter(go: GameObject) {
     if (go.name === 'PlayerBullet') {
+      Game.addToScore(100);
+      go.onDestroy();
+      new Explosion(this.transform);
       this.destroyed = true;
       this.factory.destroy();
       this.parent.onChildrenDestroy(this);
-      new Explosion(this.transform);
-      Game.addToScore(100);
-      go.onDestroy();
     }
   }
 

@@ -36,7 +36,7 @@ export class Enemies extends GameObject {
     }, this.movementSpeed);
     setInterval(() => {
       this.shoot();
-    }, 1000);
+    }, 500);
   }
 
   onUpdate() {

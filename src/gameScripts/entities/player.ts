@@ -74,7 +74,7 @@ export class Player extends GameObject {
         Game.restart();
       }
     } else {
-      this.shield -= 25;
+      this.shield -= 50;
     }
     clearInterval(this.shieldRestoreTimeout);
     this.shieldRestoreTimeout = setTimeout(() => {

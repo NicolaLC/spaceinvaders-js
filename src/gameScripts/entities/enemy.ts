@@ -28,6 +28,15 @@ export class Enemy extends GameObject {
     if (go.name === 'PlayerBullet') {
       Game.addToScore(100);
       go.onDestroy();
+      new Explosion({
+        position: new Vector3(
+          this.transform.position.x,
+          this.transform.position.y,
+          this.transform.position.z,
+        ),
+        rotation: new Vector3(0, 0, 0),
+        scale: new Vector3(128, 128, 1),
+      });
       this.destroyed = true;
       this.factory.destroy();
       this.parent.onChildrenDestroy(this);

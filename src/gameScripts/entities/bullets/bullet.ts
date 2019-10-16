@@ -53,11 +53,6 @@ export class Bullet extends GameObject {
   }
 
   onDestroy() {
-    new Explosion({
-      position: this.transform.position,
-      rotation: new Vector3(0, 0, 0),
-      scale: new Vector3(128, 128, 1),
-    });
     clearTimeout(this.destroyTimeout);
     super.onDestroy();
   }

@@ -14,7 +14,7 @@ export class Enemies extends GameObject {
   constructor(name: string) {
     super(
       name,
-      { className: 'Enemies' },
+      {},
       {
         position: new Vector3(0, 0, 0),
         rotation: new Vector3(0, 0, 0),
@@ -40,7 +40,10 @@ export class Enemies extends GameObject {
   }
 
   onUpdate() {
-    if (this.enemiesGO.length === 0) {
+    if (
+      this.enemiesGO.length === 0 ||
+      this.transform.position.y < -document.body.clientHeight / 2 - 200
+    ) {
       Game.restart();
     }
   }
@@ -66,7 +69,6 @@ export class Enemies extends GameObject {
           ego.transform.position.y -= 64;
         });
         this.movementSpeed -= this.movementSpeed / 8;
-        this.movementSpeed = Math.max(500, this.movementSpeed);
       }, this.movementSpeed / 2);
     }
 

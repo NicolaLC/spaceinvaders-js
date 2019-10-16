@@ -1,6 +1,5 @@
-import { Game } from '../game';
-import { GameObject } from '../core/class/GameObject/game-object';
 import { Vector3 } from 'three';
+import { CrossBulletExplosionEffect } from '../effects/cross-bullet-explosion-effect';
 import { Bullet } from './bullet';
 /**
  * PLAYER PROTOTYPE
@@ -24,6 +23,12 @@ export class CrossBullet extends Bullet {
         1000,
       );
     }
+    new CrossBulletExplosionEffect({
+      position: new Vector3(transform.position.x, transform.position.y + 32, 0),
+      rotation: new Vector3(0, 0, 0),
+      scale: new Vector3(512, 512, 1),
+    });
+    clearTimeout(this.destroyTimeout);
     super.onDestroy();
   }
 }

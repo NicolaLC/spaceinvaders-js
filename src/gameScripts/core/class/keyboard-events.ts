@@ -2,6 +2,7 @@ import { EventEmitter } from 'events';
 export enum KEYS {
   LEFT = 65,
   RIGHT = 68,
+  UP = 87,
   SPACEBAR = 32,
 }
 export class InputManager {
@@ -11,6 +12,7 @@ export class InputManager {
   protected static KEYS_PRESSED: { [key: string]: boolean } = {
     LEFT: false,
     RIGHT: false,
+    UP: false,
     SPACEBAR: false,
   };
 
@@ -30,6 +32,9 @@ export class InputManager {
           InputManager.KEYS_PRESSED.RIGHT = true;
           InputManager.KEYS_PRESSED.LEFT = false;
           break;
+        case KEYS.UP:
+          InputManager.KEYS_PRESSED.UP = true;
+          break;
         case KEYS.SPACEBAR:
           InputManager.KEYS_PRESSED.SPACEBAR = true;
           break;
@@ -46,6 +51,9 @@ export class InputManager {
           break;
         case KEYS.RIGHT:
           InputManager.KEYS_PRESSED.RIGHT = false;
+          break;
+        case KEYS.UP:
+          InputManager.KEYS_PRESSED.UP = false;
           break;
         case KEYS.SPACEBAR:
           InputManager.KEYS_PRESSED.SPACEBAR = false;

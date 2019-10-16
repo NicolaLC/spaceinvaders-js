@@ -5,9 +5,7 @@ import { TextureLoader, SpriteMaterial, Sprite, Texture } from 'three';
  * @description utility class for GameObject factory
  */
 export interface GameObjectFactoryProperties {
-  className: string;
   images?: any[];
-  parent?: HTMLElement;
 }
 export class GameObjectFactory {
   htmlRef: HTMLElement;

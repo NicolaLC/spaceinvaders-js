@@ -1,7 +1,5 @@
-import { Bullet } from './bullet';
-import { GameObject } from '../core/class/GameObject/game-object';
-import { Transform } from '../core/interfaces/transform';
-import { Game } from '../game';
+import { GameObject } from '../../core/class/GameObject/game-object';
+import { Transform } from '../../core/interfaces/transform';
 /**
  * PLAYER PROTOTYPE
  */
@@ -10,7 +8,6 @@ export class Explosion extends GameObject {
     super(
       name,
       {
-        className: 'Explosion',
         images: ['assets/images/explosion.png'],
       },
       transform,

@@ -1,7 +1,6 @@
-import { Game } from '../game';
-import { GameObject } from '../core/class/GameObject/game-object';
 import { Vector3 } from 'three';
-import { Explosion } from './explosion';
+import { Explosion } from '../effects/explosion';
+import { GameObject } from '../../core/class/GameObject/game-object';
 /**
  * PLAYER PROTOTYPE
  */
@@ -22,9 +21,7 @@ export class Bullet extends GameObject {
     super(
       name,
       {
-        className: 'Bullet',
         images: images || ['assets/images/bullet.png'],
-        parent: Game.scene,
       },
       {
         position,

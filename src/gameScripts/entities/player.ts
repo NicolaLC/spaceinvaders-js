@@ -4,8 +4,9 @@ import { KEYS, InputManager } from '../core/class/keyboard-events';
 import { MathUtils } from '../core/class/math-utils';
 import { Vector3 } from 'three';
 import { UI } from '../ui';
-import { Bullet } from './bullet';
-import { CrossBullet } from './cross-bullet';
+import { CrossBullet } from './bullets/cross-bullet';
+import { ShootEffect } from './effects/shoot-effect';
+import { Bullet } from './bullets/bullet';
 
 /**
  * PLAYER PROTOTYPE
@@ -23,7 +24,6 @@ export class Player extends GameObject {
     super(
       name,
       {
-        className: 'Player',
         images: ['assets/images/SpaceShip.svg'],
       },
       {
@@ -43,11 +43,11 @@ export class Player extends GameObject {
     } else if (InputManager.keyPressed(KEYS.RIGHT)) {
       this.move(1);
     }
-    if (InputManager.keyPressed(KEYS.SPACEBAR)) {
+    if (InputManager.keyPressed(KEYS.UP)) {
       if (!this.shootInterval) {
         this.shootInterval = setInterval(() => {
           this.shoot();
-        }, 500);
+        }, 250);
         this.shoot();
       }
     } else {
@@ -106,7 +106,16 @@ export class Player extends GameObject {
   private shoot() {
     const { transform } = this;
     // instantiate new bullet
-    new CrossBullet(
+    new ShootEffect({
+      position: new Vector3(
+        transform.position.x,
+        transform.position.y + 64,
+        transform.position.z,
+      ),
+      rotation: transform.rotation,
+      scale: new Vector3(64, 64, 1),
+    });
+    new Bullet(
       'PlayerBullet',
       new Vector3(transform.position.x, transform.position.y + 60, 0),
       new Vector3(0, 1, 0),

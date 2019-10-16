@@ -1,9 +1,10 @@
 import { GameObject } from '../core/class/GameObject/game-object';
 import { Vector3 } from 'three';
-import { EnemyBullet } from './enemy-bullet';
+import { EnemyBullet } from './bullets/enemy-bullet';
 import { Enemies } from './enemies';
-import { Explosion } from './explosion';
+import { Explosion } from './effects/explosion';
 import { Game } from '../game';
+import { ShootEffect } from './effects/shoot-effect';
 /**
  * PLAYER PROTOTYPE
  */
@@ -12,7 +13,7 @@ export class Enemy extends GameObject {
   constructor(name: string, position: Vector3, parent: Enemies) {
     super(
       name,
-      { className: 'Enemy', images: ['assets/images/Enemy01.png'] },
+      { images: ['assets/images/Enemy01.png'] },
       {
         position,
         rotation: new Vector3(0, 0, 0),
@@ -35,6 +36,15 @@ export class Enemy extends GameObject {
 
   shoot() {
     const { transform } = this;
+    new ShootEffect({
+      position: new Vector3(
+        transform.position.x,
+        transform.position.y - 64,
+        transform.position.z,
+      ),
+      rotation: new Vector3(0, 0, -Math.PI),
+      scale: new Vector3(64, 64, 1),
+    });
     // instantiate new bullet
     new EnemyBullet(
       'EnemyBullet',

@@ -20,8 +20,8 @@ export class Explosion extends GameObject {
     }, 1000);
 
     setInterval(() => {
-      this.transform.scale.x /= Math.random() * 2 + 1;
-      this.transform.scale.y /= Math.random() * 2 + 1;
-    }, 50);
+      this.transform.scale.x /= 1.1;
+      this.transform.scale.y /= 1.1;
+    }, 100 / 60);
   }
 }

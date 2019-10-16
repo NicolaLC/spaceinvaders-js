@@ -1,6 +1,7 @@
 import { Game } from '../game';
 import { GameObject } from '../core/class/GameObject/game-object';
 import { Vector3 } from 'three';
+import { Explosion } from './explosion';
 /**
  * PLAYER PROTOTYPE
  */
@@ -16,17 +17,28 @@ export class Bullet extends GameObject {
     direction: Vector3,
     bulletSpeed: number = 25,
     lifeTime: number = 2000,
+    images?: string[],
   ) {
     super(
       name,
       {
         className: 'Bullet',
-        images: ['assets/images/bullet.png'],
+        images: images || ['assets/images/bullet.png'],
         parent: Game.scene,
       },
       {
         position,
-        rotation: new Vector3(0, 0, direction.x !== 0 ? Math.PI / 2 : 0),
+        rotation: new Vector3(
+          0,
+          0,
+          direction.x !== 0
+            ? direction.x > 0
+              ? -Math.PI / 2
+              : Math.PI / 2
+            : direction.y < 0
+            ? -Math.PI
+            : 0,
+        ),
         scale: new Vector3(8, 32, 1),
       },
     );
@@ -44,6 +56,11 @@ export class Bullet extends GameObject {
   }
 
   onDestroy() {
+    new Explosion({
+      position: this.transform.position,
+      rotation: new Vector3(0, 0, 0),
+      scale: new Vector3(128, 128, 1),
+    });
     clearTimeout(this.destroyTimeout);
     super.onDestroy();
   }

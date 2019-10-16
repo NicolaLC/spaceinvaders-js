@@ -27,7 +27,6 @@ export class Enemy extends GameObject {
     if (go.name === 'PlayerBullet') {
       Game.addToScore(100);
       go.onDestroy();
-      new Explosion(this.transform);
       this.destroyed = true;
       this.factory.destroy();
       this.parent.onChildrenDestroy(this);
@@ -39,10 +38,11 @@ export class Enemy extends GameObject {
     // instantiate new bullet
     new EnemyBullet(
       'EnemyBullet',
-      new Vector3(transform.position.x + 2, transform.position.y - 60, 0),
+      new Vector3(transform.position.x + 2, transform.position.y - 70, 0),
       new Vector3(0, -1, 0),
-      10,
-      3000,
+      5,
+      5000,
+      ['assets/images/EnemyBullet.png'],
     );
   }
 }

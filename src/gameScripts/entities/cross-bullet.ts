@@ -21,6 +21,7 @@ export class CrossBullet extends Bullet {
         new Vector3(transform.position.x, transform.position.y + 32, 0),
         new Vector3(directions[i].x, directions[i].y, 0),
         5,
+        1000,
       );
     }
     super.onDestroy();

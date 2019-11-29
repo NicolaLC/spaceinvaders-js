@@ -1,3 +1,5 @@
+[![](https://codescene.io/projects/6222/status.svg) Get more details at **codescene.io**.](https://codescene.io/projects/6222/jobs/latest-successful/results)
+
 ## NOTES
 Bullet should collide with a GameObject instance and not with an htmlElement, the problem is than the collision detection is between htmlElements, so I need to associate any htmlElement with a gameObject.
 
